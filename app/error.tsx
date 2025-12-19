@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { ErrorState } from '@/components/states/ErrorState';
+import { useEffect } from 'react'
+import { ErrorState } from '@/components/states/ErrorState'
 
 /**
  * ルートエラーバウンダリ (Client Component)
@@ -11,16 +11,16 @@ export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }) {
   useEffect(() => {
-    console.error(error);
-  }, [error]);
+    console.error(error)
+  }, [error])
 
   return (
-     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <ErrorState error={error} reset={reset} />
-     </div>
-  );
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <ErrorState error={error} reset={reset} />
+    </div>
+  )
 }

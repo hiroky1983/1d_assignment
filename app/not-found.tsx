@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { Header } from '@/components/layout/Header';
-import { FileQuestion } from 'lucide-react';
+import Link from 'next/link'
+import { Header } from '@/components/layout/Header'
+import { FileQuestion } from 'lucide-react'
 
 /**
  * 404 ページ (Server Component)
@@ -13,9 +13,12 @@ export default function NotFound() {
       <main className="grow flex flex-col items-center justify-center p-4">
         <div className="text-center">
           <FileQuestion className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Page Not Found</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Page Not Found
+          </h2>
           <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been moved or deleted.
+            Sorry, we couldn&apos;t find the page you&apos;re looking for. It
+            might have been moved or deleted.
           </p>
           <Link
             href="/"
@@ -26,5 +29,5 @@ export default function NotFound() {
         </div>
       </main>
     </div>
-  );
+  )
 }

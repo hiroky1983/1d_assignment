@@ -1,12 +1,12 @@
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Star } from 'lucide-react';
-import { GitHubRepo } from '../types';
-import { Skeleton } from '@/components/ui/Skeleton';
+import React from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Star } from 'lucide-react'
+import { GitHubRepo } from '../types'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 interface RepoListProps {
-  repos: GitHubRepo[];
+  repos: GitHubRepo[]
 }
 
 /**
@@ -17,15 +17,15 @@ export const RepoList = ({ repos }: RepoListProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-8">
       {repos.map((repo) => (
-        <Link 
-          key={repo.id} 
+        <Link
+          key={repo.id}
           href={`/repo/${repo.owner.login}/${repo.name}`}
           className="block group h-full"
         >
           <article className="h-full p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col">
             <div className="flex items-center mb-4">
-              <Image 
-                src={repo.owner.avatar_url} 
+              <Image
+                src={repo.owner.avatar_url}
                 alt={`${repo.owner.login} avatar`}
                 width={40}
                 height={40}
@@ -63,8 +63,8 @@ export const RepoList = ({ repos }: RepoListProps) => {
         </Link>
       ))}
     </div>
-  );
-};
+  )
+}
 
 /**
  * リポジトリ一覧のスケルトンローディング (UI)
@@ -73,7 +73,10 @@ export const RepoListSkeleton = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-8">
       {[...Array(6)].map((_, i) => (
-        <div key={i} className="p-6 bg-white rounded-xl border border-gray-200 h-64 flex flex-col">
+        <div
+          key={i}
+          className="p-6 bg-white rounded-xl border border-gray-200 h-64 flex flex-col"
+        >
           <div className="flex items-center mb-4">
             <Skeleton className="w-10 h-10 rounded-full mr-3" />
             <div className="flex-1">
@@ -85,11 +88,11 @@ export const RepoListSkeleton = () => {
           <Skeleton className="h-4 w-full mb-2" />
           <Skeleton className="h-4 w-2/3 mb-4" />
           <div className="mt-auto pt-4 flex justify-between">
-             <Skeleton className="h-4 w-1/4" />
-             <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-4 w-1/4" />
           </div>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
