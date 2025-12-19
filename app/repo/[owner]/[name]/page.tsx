@@ -41,6 +41,10 @@ export async function generateMetadata(
   };
 }
 
+/**
+ * リポジトリ詳細ページ (Server Component)
+ * URL パラメータに基づいてリポジトリ詳細情報を取得・表示します。
+ */
 export default async function Page(props: Props) {
   const params = await props.params;
   const { owner, name } = params;

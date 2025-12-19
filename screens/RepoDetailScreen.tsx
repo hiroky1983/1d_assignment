@@ -9,7 +9,11 @@ interface RepoDetailScreenProps {
   repo: RepoDetail;
 }
 
-export function RepoDetailScreen({ repo }: RepoDetailScreenProps) {
+/**
+ * リポジトリ詳細画面 (Server Screen)
+ * リポジトリ詳細情報の全体レイアウトを担当します。
+ */
+export const RepoDetailScreen = ({ repo }: RepoDetailScreenProps) => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">
       <Header />
@@ -27,4 +31,4 @@ export function RepoDetailScreen({ repo }: RepoDetailScreenProps) {
       </main>
     </div>
   );
-}
+};

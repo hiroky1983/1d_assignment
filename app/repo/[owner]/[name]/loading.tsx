@@ -2,6 +2,10 @@ import { Header } from '@/components/layout/Header';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ArrowLeft } from 'lucide-react';
 
+/**
+ * リポジトリ詳細ローディング画面 (Server Component)
+ * 詳細ページ読み込み中に表示されるスケルトン UI です。
+ */
 export default function Loading() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">

@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   description: 'Search for GitHub repositories with Next.js App Router',
 };
 
+/**
+ * ホームページ (Server Component)
+ * 検索画面を表示します。
+ */
 export default function Page() {
   return <SearchScreen />;
 }

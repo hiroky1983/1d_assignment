@@ -9,7 +9,11 @@ interface SearchInputProps {
   isLoading?: boolean;
 }
 
-export function SearchInput({ value, onChange, onSearch, isLoading }: SearchInputProps) {
+/**
+ * 検索入力フォームコンポーネント (UI/Interaction)
+ * テキスト入力、IME入力制御、検索トリガーイベントをハンドルします。
+ */
+export const SearchInput = ({ value, onChange, onSearch, isLoading }: SearchInputProps) => {
   const [innerValue, setInnerValue] = useState(value);
   const [isComposing, setIsComposing] = useState(false);
 
@@ -74,4 +78,4 @@ export function SearchInput({ value, onChange, onSearch, isLoading }: SearchInpu
       </div>
     </div>
   );
-}
+};

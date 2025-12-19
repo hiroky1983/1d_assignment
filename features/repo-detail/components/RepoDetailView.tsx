@@ -6,7 +6,11 @@ interface RepoDetailViewProps {
   repo: RepoDetail;
 }
 
-export function RepoDetailView({ repo }: RepoDetailViewProps) {
+/**
+ * リポジトリ詳細表示コンポーネント (Server Component compatible)
+ * リポジトリの詳細情報、統計、トピック等を表示します。
+ */
+export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <div className="p-8 border-b border-gray-100 bg-linear-to-r from-gray-50 to-white">
@@ -73,9 +77,13 @@ export function RepoDetailView({ repo }: RepoDetailViewProps) {
       </div>
     </div>
   );
-}
+};
 
-function StatCard({ icon, label, value }: { icon: React.ReactNode, label: string, value: number }) {
+/**
+ * 統計情報カードコンポーネント (Internal component)
+ * アイコン、数値、ラベルを表示します。
+ */
+const StatCard = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: number }) => {
   return (
     <div className="bg-gray-50 rounded-lg p-4 flex flex-col items-center justify-center text-center border border-gray-100">
       <div className="mb-2 p-2 bg-white rounded-full shadow-sm">{icon}</div>
@@ -83,4 +91,4 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode, label: string
       <div className="text-sm text-gray-500">{label}</div>
     </div>
   );
-}
+};

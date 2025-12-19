@@ -9,7 +9,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-export function Pagination({ currentPage, totalCount, perPage = 10, onPageChange }: PaginationProps) {
+/**
+ * ページネーションコンポーネント (UI)
+ * 検索結果のページ送りを管理・表示します。
+ */
+export const Pagination = ({ currentPage, totalCount, perPage = 10, onPageChange }: PaginationProps) => {
   // Cap at 1000 results as per GitHub API limitation for generic search
   const maxResults = Math.min(totalCount, 1000); 
   const totalPages = Math.ceil(maxResults / perPage);
@@ -47,4 +51,4 @@ export function Pagination({ currentPage, totalCount, perPage = 10, onPageChange
       </button>
     </div>
   );
-}
+};

@@ -24,3 +24,9 @@
 
 - 曖昧な要件は実装前に確認する
 - 変更理由を明確にコミットメッセージやプルリクエストに記載する
+
+## コーディング規約 (Coding Standards)
+
+- **JSDoc**: 関数やコンポーネントには必ず JSDoc を付与する (役割、引数、戻り値など)
+- **関数定義**: `page.tsx`, `layout.tsx` 等の Next.js の仕様で必要な場合を除き、`function` キーワードは使わず `const` で定義する (アロー関数)
+- **エクスポート**: `page.tsx`, `layout.tsx` 等の Next.js の仕様で必要な場合を除き、`export default` は使わず Named Export を使用する

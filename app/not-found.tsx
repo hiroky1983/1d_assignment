@@ -2,6 +2,10 @@ import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { FileQuestion } from 'lucide-react';
 
+/**
+ * 404 ページ (Server Component)
+ * 存在しないページがリクエストされた場合に表示されます。
+ */
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">

@@ -1,7 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 
-export function Header() {
+/**
+ * 共通ヘッダーコンポーネント (UI)
+ * 全ページ共通のナビゲーションヘッダーを表示します。
+ */
+export const Header = () => {
   return (
     <header className="p-4 border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
@@ -11,4 +15,4 @@ export function Header() {
       </div>
     </header>
   );
-}
+};

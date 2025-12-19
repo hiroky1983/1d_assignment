@@ -3,6 +3,10 @@
 import { useEffect } from 'react';
 import { ErrorState } from '@/components/states/ErrorState';
 
+/**
+ * ルートエラーバウンダリ (Client Component)
+ * アプリケーション全体でキャッチされなかったエラーを表示します。
+ */
 export default function Error({
   error,
   reset,
