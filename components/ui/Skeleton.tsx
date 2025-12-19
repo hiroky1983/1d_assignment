@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 /**
  * スケルトンローディングコンポーネント (UI)
@@ -10,7 +10,7 @@ const Skeleton = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-gray-200/80", className)}
+      className={cn('animate-pulse rounded-md bg-gray-200/80', className)}
       {...props}
     />
   )

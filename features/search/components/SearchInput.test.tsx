@@ -20,7 +20,7 @@ test('SearchInput handles IME composition correctly', () => {
   // Start composition
   fireEvent.compositionStart(input)
   fireEvent.change(input, { target: { value: 'k' } })
-  
+
   // Should NOT call onChange during composition
   expect(handleChange).not.toHaveBeenCalled()
 
@@ -32,7 +32,9 @@ test('SearchInput handles IME composition correctly', () => {
 
 test('SearchInput triggers immediate search on Enter', () => {
   const handleSearch = vi.fn()
-  render(<SearchInput value="test" onChange={() => {}} onSearch={handleSearch} />)
+  render(
+    <SearchInput value="test" onChange={() => {}} onSearch={handleSearch} />,
+  )
   const input = screen.getByPlaceholderText('Search GitHub repositories...')
 
   fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
@@ -41,10 +43,12 @@ test('SearchInput triggers immediate search on Enter', () => {
 
 test('SearchInput triggers immediate search on Button click', () => {
   const handleSearch = vi.fn()
-  render(<SearchInput value="test" onChange={() => {}} onSearch={handleSearch} />)
-  
+  render(
+    <SearchInput value="test" onChange={() => {}} onSearch={handleSearch} />,
+  )
+
   const button = screen.getByText('Search')
   fireEvent.click(button)
-  
+
   expect(handleSearch).toHaveBeenCalledWith('test')
 })

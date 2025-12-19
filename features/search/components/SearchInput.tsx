@@ -1,47 +1,57 @@
-import React, { useState, useEffect, KeyboardEvent, CompositionEvent } from 'react';
-import { Search } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, {
+  useState,
+  useEffect,
+  KeyboardEvent,
+  CompositionEvent,
+} from 'react'
+import { Search } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface SearchInputProps {
-  value: string;
-  onChange: (value: string) => void;
-  onSearch?: (value: string) => void; // Immediate search trigger
-  isLoading?: boolean;
+  value: string
+  onChange: (value: string) => void
+  onSearch?: (value: string) => void // Immediate search trigger
+  isLoading?: boolean
 }
 
 /**
  * 検索入力フォームコンポーネント (UI/Interaction)
  * テキスト入力、IME入力制御、検索トリガーイベントをハンドルします。
  */
-export const SearchInput = ({ value, onChange, onSearch, isLoading }: SearchInputProps) => {
-  const [innerValue, setInnerValue] = useState(value);
-  const [isComposing, setIsComposing] = useState(false);
+export const SearchInput = ({
+  value,
+  onChange,
+  onSearch,
+  isLoading,
+}: SearchInputProps) => {
+  const [innerValue, setInnerValue] = useState(value)
+  const [isComposing, setIsComposing] = useState(false)
 
   // Sync internal state with external prop (e.g. URL changes)
   useEffect(() => {
-    setInnerValue(value);
-  }, [value]);
+    setInnerValue(value)
+  }, [value])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setInnerValue(newValue);
+    const newValue = e.target.value
+    setInnerValue(newValue)
     if (!isComposing) {
-      onChange(newValue);
+      onChange(newValue)
     }
-  };
+  }
 
-  const handleCompositionStart = () => setIsComposing(true);
-  
+  const handleCompositionStart = () => setIsComposing(true)
+
   const handleCompositionEnd = (e: CompositionEvent<HTMLInputElement>) => {
-    setIsComposing(false);
-    onChange(e.currentTarget.value);
-  };
+    setIsComposing(false)
+    onChange(e.currentTarget.value)
+  }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isComposing) {
-      onSearch?.(innerValue);
+      onSearch?.(innerValue)
     }
-  };
+  }
 
   return (
     <div className="w-full max-w-2xl relative group">
@@ -57,9 +67,9 @@ export const SearchInput = ({ value, onChange, onSearch, isLoading }: SearchInpu
           onKeyDown={handleKeyDown}
           placeholder="Search GitHub repositories..."
           className={cn(
-            "w-full p-4 pl-12 pr-24 text-lg rounded-lg border border-gray-200 bg-white shadow-xl",
-            "focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300",
-            "placeholder-gray-400 disabled:opacity-50"
+            'w-full p-4 pl-12 pr-24 text-lg rounded-lg border border-gray-200 bg-white shadow-xl',
+            'focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300',
+            'placeholder-gray-400 disabled:opacity-50',
           )}
           disabled={isLoading && !innerValue}
         />
@@ -71,11 +81,11 @@ export const SearchInput = ({ value, onChange, onSearch, isLoading }: SearchInpu
           Search
         </button>
         {isLoading && (
-            <div className="absolute right-24 top-1/2 transform -translate-y-1/2 mr-2">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-            </div>
+          <div className="absolute right-24 top-1/2 transform -translate-y-1/2 mr-2">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+          </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
