@@ -1,7 +1,6 @@
 'use client'
 
 import React, { Suspense } from 'react'
-import { Header } from '@/components/layout/Header'
 import { SearchInput } from '@/features/search/components/SearchInput'
 import { RepoList } from '@/features/search/components/RepoList'
 import { Pagination } from '@/features/search/components/Pagination'
@@ -28,7 +27,7 @@ const SearchScreenContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans pb-20">
-      <Header />
+      {/* Header moved to layout */}
       <main className="container mx-auto px-4 py-8 flex flex-col items-center">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-gray-900 to-gray-600 mb-4 tracking-tight">
@@ -83,7 +82,7 @@ export const SearchScreen = () => {
     <Suspense
       fallback={
         <div className="min-h-screen bg-gray-50">
-          <Header />
+          {/* Header is now in layout */}
           <LoadingState />
         </div>
       }

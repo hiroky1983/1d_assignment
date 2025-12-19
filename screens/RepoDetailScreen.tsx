@@ -2,7 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { RepoDetailView } from '@/features/repo-detail/components/RepoDetailView'
-import { Header } from '@/components/layout/Header'
 import { RepoDetail } from '@/features/repo-detail/types'
 
 interface RepoDetailScreenProps {
@@ -16,7 +15,6 @@ interface RepoDetailScreenProps {
 export const RepoDetailScreen = ({ repo }: RepoDetailScreenProps) => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">
-      <Header />
       <main className="container mx-auto px-4 py-8">
         <Link
           href="/"
