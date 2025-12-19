@@ -1,7 +1,11 @@
 import React from 'react';
 import { SearchX } from 'lucide-react';
 
-export function EmptyState({ message = "No repositories found." }: { message?: string }) {
+/**
+ * 空状態表示コンポーネント (UI)
+ * データが存在しない場合に表示するメッセージコンポーネントです。
+ */
+export const EmptyState = ({ message = "No repositories found." }: { message?: string }) => {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-gray-500">
       <div className="bg-gray-100 p-4 rounded-full mb-4">
@@ -11,4 +15,4 @@ export function EmptyState({ message = "No repositories found." }: { message?: s
       <p className="text-sm mt-2">Try adjusting your search query.</p>
     </div>
   );
-}
+};

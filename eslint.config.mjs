@@ -13,6 +13,23 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "react/function-component-definition": [
+        "warn",
+        {
+          namedComponents: "arrow-function",
+          unnamedComponents: "arrow-function",
+        },
+      ],
+    },
+  },
+  {
+    files: ["app/**/*.tsx", "app/**/*.ts", "app/**/*.js", "app/**/*.jsx"],
+    rules: {
+      "react/function-component-definition": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

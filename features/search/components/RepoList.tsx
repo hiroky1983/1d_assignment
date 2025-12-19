@@ -9,7 +9,11 @@ interface RepoListProps {
   repos: GitHubRepo[];
 }
 
-export function RepoList({ repos }: RepoListProps) {
+/**
+ * リポジトリ一覧表示コンポーネント (UI)
+ * リポジトリのリストをグリッド形式で表示します。
+ */
+export const RepoList = ({ repos }: RepoListProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-8">
       {repos.map((repo) => (
@@ -60,9 +64,12 @@ export function RepoList({ repos }: RepoListProps) {
       ))}
     </div>
   );
-}
+};
 
-export function RepoListSkeleton() {
+/**
+ * リポジトリ一覧のスケルトンローディング (UI)
+ */
+export const RepoListSkeleton = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mt-8">
       {[...Array(6)].map((_, i) => (
@@ -85,4 +92,4 @@ export function RepoListSkeleton() {
       ))}
     </div>
   );
-}
+};

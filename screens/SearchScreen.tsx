@@ -10,7 +10,11 @@ import { LoadingState } from '@/components/states/LoadingState';
 import { ErrorState } from '@/components/states/ErrorState';
 import { EmptyState } from '@/components/states/EmptyState';
 
-function SearchScreenContent() {
+/**
+ * 検索画面のコンテンツコンポーネント (Client Component)
+ * 検索ロジックと結果表示を担当します。
+ */
+const SearchScreenContent = () => {
   const { query, setQuery, triggerSearch, data, error, isLoading, page, setPage } = useSearch();
 
   return (
@@ -57,12 +61,16 @@ function SearchScreenContent() {
       </main>
     </div>
   );
-}
+};
 
-export function SearchScreen() {
+/**
+ * 検索画面のメインコンポーネント
+ * UseSearch hook や Suspense boundary を管理します。
+ */
+export const SearchScreen = () => {
     return (
         <Suspense fallback={<div className="min-h-screen bg-gray-50"><Header /><LoadingState /></div>}>
             <SearchScreenContent />
         </Suspense>
     );
-}
+};

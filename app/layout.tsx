@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   description: "A simple GitHub repository search application built with Next.js App Router.",
 };
 
+/**
+ * ルートレイアウト (Server Component)
+ * アプリケーション全体の HTML 構造とグローバルスタイルを定義します。
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

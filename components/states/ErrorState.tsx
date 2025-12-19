@@ -1,6 +1,10 @@
 import React from 'react';
 
-export function ErrorState({ error, reset }: { error: Error & { digest?: string }, reset?: () => void }) {
+/**
+ * エラー状態表示コンポーネント (UI)
+ * エラー発生時のアラートと再試行アクションを提供します。
+ */
+export const ErrorState = ({ error, reset }: { error: Error & { digest?: string }, reset?: () => void }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
       <h2 className="text-xl font-bold text-red-500">Something went wrong!</h2>
@@ -15,4 +19,4 @@ export function ErrorState({ error, reset }: { error: Error & { digest?: string 
       )}
     </div>
   );
-}
+};
