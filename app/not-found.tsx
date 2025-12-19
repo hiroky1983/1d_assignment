@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Header } from '@/components/layout/Header'
 import { FileQuestion } from 'lucide-react'
 
 /**
@@ -9,7 +8,6 @@ import { FileQuestion } from 'lucide-react'
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-      <Header />
       <main className="grow flex flex-col items-center justify-center p-4">
         <div className="text-center">
           <FileQuestion className="h-24 w-24 text-gray-300 mx-auto mb-6" />
