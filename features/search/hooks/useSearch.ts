@@ -29,7 +29,7 @@ export function useSearch() {
     : null
 
   const { data, error, isLoading } = useSWR<SearchResponse>(url, fetcher, {
-    keepPreviousData: true,
+    keepPreviousData: !!url, // Only keep previous data if we are fetching a new valid URL
     revalidateOnFocus: false,
   })
 

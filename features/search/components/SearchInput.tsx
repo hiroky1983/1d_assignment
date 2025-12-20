@@ -37,6 +37,10 @@ export const SearchInput = ({
     setInnerValue(newValue)
     if (!isComposing) {
       onChange(newValue)
+      // If cleared, trigger search immediately to clear results
+      if (newValue === '') {
+        onSearch?.('')
+      }
     }
   }
 
