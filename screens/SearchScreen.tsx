@@ -26,11 +26,11 @@ const SearchScreenContent = () => {
   } = useSearch()
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20 font-sans text-gray-900">
       {/* Header moved to layout */}
-      <main className="container mx-auto px-4 py-8 flex flex-col items-center">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-gray-900 to-gray-600 mb-4 tracking-tight">
+      <main className="container mx-auto flex flex-col items-center px-4 py-8">
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 bg-linear-to-r from-gray-900 to-gray-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent">
             Find Repositories
           </h1>
           <p className="text-gray-500">
@@ -45,7 +45,7 @@ const SearchScreenContent = () => {
           isLoading={isLoading}
         />
 
-        <div className="w-full mt-8">
+        <div className="mt-8 w-full">
           {error ? (
             <ErrorState error={error} reset={() => window.location.reload()} />
           ) : isLoading && !data ? (
@@ -53,7 +53,7 @@ const SearchScreenContent = () => {
           ) : data?.items ? (
             data.items.length > 0 ? (
               <>
-                <div className="mb-4 text-sm text-gray-500 text-right w-full max-w-7xl mx-auto">
+                <div className="mx-auto mb-4 w-full max-w-7xl text-right text-sm text-gray-500">
                   Found {data.total_count.toLocaleString()} results
                 </div>
                 <RepoList repos={data.items} />
