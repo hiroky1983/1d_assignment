@@ -38,9 +38,9 @@ export const RepoList = ({
               <Image
                 src={repo.owner.avatar_url}
                 alt={`${repo.owner.login} avatar`}
-                width={40}
-                height={40}
-                className="mr-3 rounded-full border border-gray-100"
+                width={80}
+                height={80}
+                className="mr-3 h-10 w-10 rounded-full border border-gray-100"
               />
               <div className="min-w-0 flex-1">
                 <h3 className="truncate text-lg font-bold text-gray-900 transition-colors group-hover:text-blue-600">

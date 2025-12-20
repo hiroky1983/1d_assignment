@@ -22,6 +22,7 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
               width={80}
               height={80}
               className="rounded-full border-4 border-white shadow-md"
+              priority
             />
             <div>
               <h1 className="flex items-center gap-2 text-3xl font-bold text-gray-900">
