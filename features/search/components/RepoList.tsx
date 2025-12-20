@@ -7,19 +7,30 @@ import { Skeleton } from '@/components/ui/Skeleton'
 
 interface RepoListProps {
   repos: GitHubRepo[]
+  currentQuery?: string
+  currentPage?: number
 }
 
 /**
  * リポジトリ一覧表示コンポーネント (UI)
  * リポジトリのリストをグリッド形式で表示します。
  */
-export const RepoList = ({ repos }: RepoListProps) => {
+export const RepoList = ({
+  repos,
+  currentQuery = '',
+  currentPage = 1,
+}: RepoListProps) => {
+  const searchParams = new URLSearchParams()
+  if (currentQuery) searchParams.set('q', currentQuery)
+  if (currentPage > 1) searchParams.set('page', currentPage.toString())
+  const queryString = searchParams.toString()
+
   return (
     <div className="mt-8 grid w-full max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {repos.map((repo) => (
         <Link
           key={repo.id}
-          href={`/repo/${repo.owner.login}/${repo.name}`}
+          href={`/repo/${repo.owner.login}/${repo.name}${queryString ? `?${queryString}` : ''}`}
           className="group block h-full"
         >
           <article className="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg">
