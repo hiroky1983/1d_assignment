@@ -23,7 +23,7 @@ export interface SearchResponse {
 }
 
 export interface SearchParams {
-  q: string
-  page?: number
+  q?: string
+  page?: string | number
   per_page?: number
 }

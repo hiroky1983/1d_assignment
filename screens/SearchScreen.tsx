@@ -16,7 +16,7 @@ import { EmptyState } from '@/components/states/EmptyState'
 const SearchScreenContent = () => {
   const {
     query,
-    setQuery,
+    // setQuery, // No longer used in UI directly
     triggerSearch,
     data,
     error,
@@ -40,7 +40,6 @@ const SearchScreenContent = () => {
 
         <SearchInput
           value={query}
-          onChange={setQuery}
           onSearch={triggerSearch}
           isLoading={isLoading}
         />

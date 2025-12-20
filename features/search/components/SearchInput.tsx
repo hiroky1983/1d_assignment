@@ -1,73 +1,93 @@
-import React, {
-  useState,
-  useEffect,
-  KeyboardEvent,
-  CompositionEvent,
-} from 'react'
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface SearchInputProps {
   value: string
-  onChange: (value: string) => void
-  onSearch?: (value: string) => void // Immediate search trigger
+  onSearch?: (value: string) => void
   isLoading?: boolean
 }
 
+interface FormValues {
+  query: string
+}
+
 /**
- * 検索入力フォームコンポーネント (UI/Interaction)
- * テキスト入力、IME入力制御、検索トリガーイベントをハンドルします。
+ * 検索入力フォームコンポーネント (React Hook Form)
+ * フォーム送信、無駄な再レンダリング抑制、IME制御を行います。
  */
 export const SearchInput = ({
   value,
-  onChange,
   onSearch,
   isLoading,
 }: SearchInputProps) => {
-  const [innerValue, setInnerValue] = useState(value)
   const [isComposing, setIsComposing] = useState(false)
 
-  // Sync internal state with external prop (e.g. URL changes)
+  const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
+    defaultValues: { query: value },
+  })
+
+  // Watch query to detect clear ('x' button usage)
+  const queryValue = watch('query')
+
+  // URL (parent prop) changes -> Update form value
+  // We only want to update if the PARENT triggers a change (e.g. browser back button).
+  // We do NOT want to update if the user is just typing locally.
+  // Since 'value' prop only updates on SEARCH submission, it remains stale during typing.
+  // If we add 'value' to dependency array, it's fine because 'value' doesn't change during typing.
+  // BUT we must NOT add 'queryValue' to dependency array.
   useEffect(() => {
-    setInnerValue(value)
-  }, [value])
+    setValue('query', value)
+  }, [value, setValue])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    setInnerValue(newValue)
-    if (!isComposing) {
-      onChange(newValue)
-      // If cleared, trigger search immediately to clear results
-      if (newValue === '') {
-        onSearch?.('')
-      }
+  // Monitor Empty Value (for 'x' button clear support)
+  useEffect(() => {
+    // Only trigger if it BECAME empty (and was not just initialized empty)
+    // However, purely relying on useEffect for x-button is tricky with RHF.
+    // The previous infinite loop was: Empty -> onSearch -> Re-render -> Empty -> onSearch...
+
+    // We only want to trigger search if user CLEARS it.
+    // But distinguishing user clear vs initial empty is hard here.
+    // Let's rely on onSubmit for explicit searches, and only use this effect if we are sure.
+
+    // Simple fix: Check if we are already safely synced? No.
+    // The issue is onSearch('') triggers a navigation which re-renders this component.
+
+    // Better strategy for 'x' button:
+    // If the browser clears the input, 'queryValue' becomes ''.
+    // We should only call onSearch('') if the current 'value' (prop) is NOT empty.
+
+    if (queryValue === '' && value !== '') {
+      onSearch?.('')
     }
+  }, [queryValue, onSearch, value])
+
+  const onSubmit = (data: FormValues) => {
+    // Prevent submit if strictly necessary, but usually RHF handles Submit only on valid enter
+    onSearch?.(data.query)
   }
 
-  const handleCompositionStart = () => setIsComposing(true)
-
-  const handleCompositionEnd = (e: CompositionEvent<HTMLInputElement>) => {
-    setIsComposing(false)
-    onChange(e.currentTarget.value)
-  }
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isComposing) {
-      onSearch?.(innerValue)
+  // Prevent Enter submit during IME composition
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && isComposing) {
+      e.preventDefault()
     }
   }
 
   return (
-    <div className="group relative w-full max-w-2xl">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="group relative w-full max-w-2xl"
+    >
       <div className="absolute -inset-1 rounded-lg bg-linear-to-r from-blue-600 to-violet-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
       <div className="relative">
         <Search className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
         <input
           type="search"
-          value={innerValue}
-          onChange={handleChange}
-          onCompositionStart={handleCompositionStart}
-          onCompositionEnd={handleCompositionEnd}
+          {...register('query')}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={handleKeyDown}
           placeholder="Search GitHub repositories..."
           className={cn(
@@ -75,12 +95,12 @@ export const SearchInput = ({
             'transition-all duration-300 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500',
             'placeholder-gray-400 disabled:opacity-50',
           )}
-          disabled={isLoading && !innerValue}
+          disabled={isLoading && !queryValue}
         />
         <button
-          onClick={() => onSearch?.(innerValue)}
+          type="submit"
           className="absolute top-1/2 right-2 -translate-y-1/2 transform rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isLoading || !innerValue}
+          disabled={isLoading || !queryValue}
         >
           Search
         </button>
@@ -90,6 +110,6 @@ export const SearchInput = ({
           </div>
         )}
       </div>
-    </div>
+    </form>
   )
 }

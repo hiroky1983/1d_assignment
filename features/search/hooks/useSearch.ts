@@ -23,27 +23,31 @@ export function useSearch() {
   }, [searchParams])
 
   const page = Number(searchParams.get('page')) || 1
-  const urlQuery = searchParams.get('q')
-  const url = urlQuery
-    ? `/api/search?q=${encodeURIComponent(urlQuery)}&page=${page}`
-    : null
+
+  // 汎用的にURLパラメータを構築
+  const buildSearchUrl = (params: URLSearchParams) => {
+    const q = params.get('q')
+    if (!q) return null
+    return `/api/search?${params.toString()}`
+  }
+
+  const url = buildSearchUrl(searchParams)
 
   const { data, error, isLoading } = useSWR<SearchResponse>(url, fetcher, {
     keepPreviousData: !!url, // Only keep previous data if we are fetching a new valid URL
     revalidateOnFocus: false,
   })
 
-  const handleSearch = useCallback((term: string) => {
-    setQuery(term)
-  }, [])
-
+  // 汎用的な検索実行関数
   const handleImmediateSearch = useCallback(
     (term: string) => {
       setQuery(term)
+
       if (term) {
         const params = new URLSearchParams(searchParams.toString())
         params.set('q', term)
-        params.set('page', '1')
+        params.set('page', '1') // 新しい検索なら1ページ目に戻す
+
         router.push(`/?${params.toString()}`)
       } else {
         router.push('/')
@@ -63,7 +67,7 @@ export function useSearch() {
 
   return {
     query,
-    setQuery: handleSearch,
+    setQuery: (term: string) => setQuery(term),
     triggerSearch: handleImmediateSearch,
     data,
     error,
