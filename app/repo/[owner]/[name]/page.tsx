@@ -6,6 +6,7 @@ import { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ owner: string; name: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 async function getRepo(owner: string, name: string): Promise<RepoDetail> {
@@ -47,8 +48,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
  */
 export default async function Page(props: Props) {
   const params = await props.params
+  const searchParams = await props.searchParams
   const { owner, name } = params
   const repo = await getRepo(owner, name)
 
-  return <RepoDetailScreen repo={repo} />
+  const q = typeof searchParams.q === 'string' ? searchParams.q : undefined
+  const page =
+    typeof searchParams.page === 'string'
+      ? parseInt(searchParams.page)
+      : undefined
+
+  return <RepoDetailScreen repo={repo} searchParams={{ q, page }} />
 }

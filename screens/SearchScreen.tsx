@@ -56,7 +56,11 @@ const SearchScreenContent = () => {
                 <div className="mx-auto mb-4 w-full max-w-7xl text-right text-sm text-gray-500">
                   Found {data.total_count.toLocaleString()} results
                 </div>
-                <RepoList repos={data.items} />
+                <RepoList
+                  repos={data.items}
+                  currentQuery={query}
+                  currentPage={page}
+                />
                 <Pagination
                   currentPage={page}
                   totalCount={data.total_count}
