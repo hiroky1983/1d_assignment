@@ -26,19 +26,19 @@ export const Pagination = ({
   if (totalPages <= 1) return null
 
   return (
-    <div className="flex items-center justify-center space-x-4 mt-8">
+    <div className="mt-8 flex items-center justify-center space-x-4">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
         className={cn(
-          'p-2 rounded-md border border-gray-200 transition-colors',
+          'rounded-md border border-gray-200 p-2 transition-colors',
           currentPage <= 1
-            ? 'text-gray-300 cursor-not-allowed'
+            ? 'cursor-not-allowed text-gray-300'
             : 'text-gray-600 hover:bg-gray-100',
         )}
         aria-label="Previous page"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="h-5 w-5" />
       </button>
 
       <span className="text-sm font-medium text-gray-600">
@@ -49,14 +49,14 @@ export const Pagination = ({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
         className={cn(
-          'p-2 rounded-md border border-gray-200 transition-colors',
+          'rounded-md border border-gray-200 p-2 transition-colors',
           currentPage >= totalPages
-            ? 'text-gray-300 cursor-not-allowed'
+            ? 'cursor-not-allowed text-gray-300'
             : 'text-gray-600 hover:bg-gray-100',
         )}
         aria-label="Next page"
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="h-5 w-5" />
       </button>
     </div>
   )

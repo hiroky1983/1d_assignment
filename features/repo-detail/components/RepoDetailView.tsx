@@ -12,9 +12,9 @@ interface RepoDetailViewProps {
  */
 export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-8 border-b border-gray-100 bg-linear-to-r from-gray-50 to-white">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+      <div className="border-b border-gray-100 bg-linear-to-r from-gray-50 to-white p-8">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="flex items-center gap-6">
             <Image
               src={repo.owner.avatar_url}
@@ -24,14 +24,14 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
               className="rounded-full border-4 border-white shadow-md"
             />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+              <h1 className="flex items-center gap-2 text-3xl font-bold text-gray-900">
                 {repo.name}
-                <span className="text-gray-400 font-normal text-xl">/</span>
+                <span className="text-xl font-normal text-gray-400">/</span>
                 <span className="text-gray-600">{repo.owner.login}</span>
               </h1>
               {repo.language && (
-                <div className="flex items-center mt-2 text-gray-600">
-                  <span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                <div className="mt-2 flex items-center text-gray-600">
+                  <span className="mr-2 h-3 w-3 rounded-full bg-blue-500"></span>
                   {repo.language}
                 </div>
               )}
@@ -42,37 +42,37 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+            className="flex items-center justify-center rounded-lg bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800"
           >
             View on GitHub
-            <ExternalLink className="w-4 h-4 ml-2" />
+            <ExternalLink className="ml-2 h-4 w-4" />
           </a>
         </div>
       </div>
 
       <div className="p-8">
-        <p className="text-xl text-gray-600 leading-relaxed mb-8 max-w-4xl">
+        <p className="mb-8 max-w-4xl text-xl leading-relaxed text-gray-600">
           {repo.description || 'No description provided.'}
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+        <div className="mb-8 grid grid-cols-2 gap-6 md:grid-cols-4">
           <StatCard
-            icon={<Star className="w-6 h-6 text-yellow-500" />}
+            icon={<Star className="h-6 w-6 text-yellow-500" />}
             label="Stars"
             value={repo.stargazers_count}
           />
           <StatCard
-            icon={<Eye className="w-6 h-6 text-blue-500" />}
+            icon={<Eye className="h-6 w-6 text-blue-500" />}
             label="Watchers"
             value={repo.subscribers_count}
           />
           <StatCard
-            icon={<GitFork className="w-6 h-6 text-purple-500" />}
+            icon={<GitFork className="h-6 w-6 text-purple-500" />}
             label="Forks"
             value={repo.forks_count}
           />
           <StatCard
-            icon={<CircleDot className="w-6 h-6 text-green-500" />}
+            icon={<CircleDot className="h-6 w-6 text-green-500" />}
             label="Issues"
             value={repo.open_issues_count}
           />
@@ -80,14 +80,14 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
 
         {repo.topics && repo.topics.length > 0 && (
           <div className="mt-8">
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase">
               Topics
             </h3>
             <div className="flex flex-wrap gap-2">
               {repo.topics.map((topic) => (
                 <span
                   key={topic}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+                  className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
                 >
                   {topic}
                 </span>
@@ -114,8 +114,8 @@ const StatCard = ({
   value: number
 }) => {
   return (
-    <div className="bg-gray-50 rounded-lg p-4 flex flex-col items-center justify-center text-center border border-gray-100">
-      <div className="mb-2 p-2 bg-white rounded-full shadow-sm">{icon}</div>
+    <div className="flex flex-col items-center justify-center rounded-lg border border-gray-100 bg-gray-50 p-4 text-center">
+      <div className="mb-2 rounded-full bg-white p-2 shadow-sm">{icon}</div>
       <div className="text-2xl font-bold text-gray-900">
         {value.toLocaleString()}
       </div>

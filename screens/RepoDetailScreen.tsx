@@ -14,14 +14,14 @@ interface RepoDetailScreenProps {
  */
 export const RepoDetailScreen = ({ repo }: RepoDetailScreenProps) => {
   return (
-    <div className="min-h-screen bg-gray-50 font-sans pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20 font-sans">
       <main className="container mx-auto px-4 py-8">
         <Link
           href="/"
-          className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors group"
+          className="group mb-6 inline-flex items-center text-gray-500 transition-colors hover:text-gray-900"
         >
-          <div className="p-2 bg-white rounded-full shadow-sm border border-gray-200 mr-2 group-hover:border-gray-300">
-            <ArrowLeft className="w-5 h-5" />
+          <div className="mr-2 rounded-full border border-gray-200 bg-white p-2 shadow-sm group-hover:border-gray-300">
+            <ArrowLeft className="h-5 w-5" />
           </div>
           Back to Search
         </Link>

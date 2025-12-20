@@ -12,11 +12,11 @@ export const EmptyState = ({
 }) => {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-      <div className="bg-gray-100 p-4 rounded-full mb-4">
-        <SearchX className="w-8 h-8 text-gray-400" />
+      <div className="mb-4 rounded-full bg-gray-100 p-4">
+        <SearchX className="h-8 w-8 text-gray-400" />
       </div>
       <p className="text-lg font-medium">{message}</p>
-      <p className="text-sm mt-2">Try adjusting your search query.</p>
+      <p className="mt-2 text-sm">Try adjusting your search query.</p>
     </div>
   )
 }

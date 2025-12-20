@@ -12,13 +12,13 @@ export const ErrorState = ({
   reset?: () => void
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
+    <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-4">
       <h2 className="text-xl font-bold text-red-500">Something went wrong!</h2>
       <p className="text-gray-600">{error.message}</p>
       {reset && (
         <button
           onClick={() => reset()}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
+          className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-600"
         >
           Try again
         </button>
