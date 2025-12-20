@@ -15,6 +15,15 @@ const eslintConfig = defineConfig([
   ]),
   {
     rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       'react/function-component-definition': [
         'warn',
         {

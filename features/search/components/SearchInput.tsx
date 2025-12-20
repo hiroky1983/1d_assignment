@@ -28,43 +28,20 @@ export const SearchInput = ({
     defaultValues: { query: value },
   })
 
-  // Watch query to detect clear ('x' button usage)
+  // eslint-disable-next-line react-hooks/incompatible-library
   const queryValue = watch('query')
 
-  // URL (parent prop) changes -> Update form value
-  // We only want to update if the PARENT triggers a change (e.g. browser back button).
-  // We do NOT want to update if the user is just typing locally.
-  // Since 'value' prop only updates on SEARCH submission, it remains stale during typing.
-  // If we add 'value' to dependency array, it's fine because 'value' doesn't change during typing.
-  // BUT we must NOT add 'queryValue' to dependency array.
   useEffect(() => {
     setValue('query', value)
   }, [value, setValue])
 
-  // Monitor Empty Value (for 'x' button clear support)
   useEffect(() => {
-    // Only trigger if it BECAME empty (and was not just initialized empty)
-    // However, purely relying on useEffect for x-button is tricky with RHF.
-    // The previous infinite loop was: Empty -> onSearch -> Re-render -> Empty -> onSearch...
-
-    // We only want to trigger search if user CLEARS it.
-    // But distinguishing user clear vs initial empty is hard here.
-    // Let's rely on onSubmit for explicit searches, and only use this effect if we are sure.
-
-    // Simple fix: Check if we are already safely synced? No.
-    // The issue is onSearch('') triggers a navigation which re-renders this component.
-
-    // Better strategy for 'x' button:
-    // If the browser clears the input, 'queryValue' becomes ''.
-    // We should only call onSearch('') if the current 'value' (prop) is NOT empty.
-
     if (queryValue === '' && value !== '') {
       onSearch?.('')
     }
   }, [queryValue, onSearch, value])
 
   const onSubmit = (data: FormValues) => {
-    // Prevent submit if strictly necessary, but usually RHF handles Submit only on valid enter
     onSearch?.(data.query)
   }
 

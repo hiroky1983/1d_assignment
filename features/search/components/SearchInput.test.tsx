@@ -49,11 +49,6 @@ test('SearchInput prevents submit during IME composition', async () => {
 
   // Enter key down during composition -> Should NOT submit
   // Note: keyPress/down simulation with isComposing check in component
-  const enterEvent = new KeyboardEvent('keydown', {
-    key: 'Enter',
-    bubbles: true,
-    cancelable: true,
-  })
   // We need to bypass fireEvent wrapper to simulate exact event sequence if possible,
   // or just trust component's onKeyDown logic.
   // The component checks isComposing state.

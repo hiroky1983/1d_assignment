@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { SearchInput } from '@/features/search/components/SearchInput'
 import { RepoList } from '@/features/search/components/RepoList'
 import { Pagination } from '@/features/search/components/Pagination'
@@ -14,16 +14,8 @@ import { EmptyState } from '@/components/states/EmptyState'
  * 検索ロジックと結果表示を担当します。
  */
 const SearchScreenContent = () => {
-  const {
-    query,
-    // setQuery, // No longer used in UI directly
-    triggerSearch,
-    data,
-    error,
-    isLoading,
-    page,
-    setPage,
-  } = useSearch()
+  const { query, triggerSearch, data, error, isLoading, page, setPage } =
+    useSearch()
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans text-gray-900">
