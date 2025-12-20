@@ -262,15 +262,15 @@ lib/
 
 ```typescript
 // lib/env.ts
-import { z } from "zod";
+import { z } from 'zod'
 
 const envSchema = z.object({
   GITHUB_TOKEN: z.string().min(1),
-});
+})
 
 export const env = envSchema.parse({
   GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-});
+})
 ```
 
 ---
@@ -363,3 +363,17 @@ export const env = envSchema.parse({
 | 本番想定               | BFF / エラー設計 / 環境変数 / SEO |
 | チーム開発             | JSDoc / AGENTS.md / テスト        |
 | 見やすさ・操作しやすさ | レスポンシブ / A11y / ErrorState  |
+
+todo
+
+- vercel デプロイ設定
+- 各 AI エージェントのルール設定
+- playwright の設定
+- 全体的なキャッシュ戦略
+- pnpm-lock.yaml の frozen 設定
+- ui コンポーネントの追加
+  - Button
+  - Input
+- カードレイアウト（グリッド微妙）
+- ライブラリ選定理由
+- テスト設計
