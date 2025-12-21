@@ -16,7 +16,7 @@ interface PaginationProps {
 export const Pagination = ({
   currentPage,
   totalCount,
-  perPage = 10,
+  perPage = 20,
   onPageChange,
 }: PaginationProps) => {
   // Cap at 1000 results as per GitHub API limitation for generic search

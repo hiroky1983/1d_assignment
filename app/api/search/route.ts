@@ -1,20 +1,57 @@
 import { NextResponse } from 'next/server'
 import { env } from '@/lib/env'
 import { SearchResponse } from '@/features/search/types'
+import { rateLimit } from '@/lib/ratelimit'
+
+const limiter = rateLimit({
+  interval: 10 * 1000, // 10 seconds
+  uniqueTokenPerInterval: 500,
+})
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
   try {
+    // Rate Limit Check
+    const ip =
+      request.headers.get('x-forwarded-for') ||
+      request.headers.get('x-real-ip') ||
+      '127.0.0.1'
+    const { isRateLimited, limit, currentUsage } = limiter.check(10, ip) // Limit 10 requests per minute
+
+    if (isRateLimited) {
+      return NextResponse.json(
+        { message: 'Too Many Requests' },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': Math.max(
+              0,
+              limit - currentUsage,
+            ).toString(),
+          },
+        },
+      )
+    }
+
     const { searchParams } = new URL(request.url)
     const q = searchParams.get('q')
     const page = searchParams.get('page') || '1'
-    const per_page = searchParams.get('per_page') || '10'
+    const per_page = searchParams.get('per_page') || '20'
 
     if (!q) {
       return NextResponse.json(
         { total_count: 0, items: [], incomplete_results: false },
         { status: 200 },
+      )
+    }
+
+    // Validation: Max Length 100
+    if (q.length > 100) {
+      return NextResponse.json(
+        { message: 'Query too long (max 100 characters)' },
+        { status: 400 },
       )
     }
 

@@ -24,8 +24,15 @@ export const SearchInput = ({
 }: SearchInputProps) => {
   const [isComposing, setIsComposing] = useState(false)
 
-  const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<FormValues>({
     defaultValues: { query: value },
+    mode: 'onChange',
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -62,7 +69,10 @@ export const SearchInput = ({
         <Search className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
         <input
           type="search"
-          {...register('query')}
+          {...register('query', {
+            validate: (value) =>
+              value.length <= 100 || 'Max 100 characters allowed',
+          })}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={handleKeyDown}
@@ -77,7 +87,7 @@ export const SearchInput = ({
         <button
           type="submit"
           className="absolute top-1/2 right-2 -translate-y-1/2 transform rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isLoading || !queryValue}
+          disabled={isLoading || !queryValue || !isValid}
         >
           Search
         </button>
@@ -87,6 +97,9 @@ export const SearchInput = ({
           </div>
         )}
       </div>
+      {errors.query && (
+        <p className="mt-2 text-sm text-red-500">{errors.query.message}</p>
+      )}
     </form>
   )
 }
