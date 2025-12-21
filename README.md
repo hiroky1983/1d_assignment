@@ -374,7 +374,6 @@ todo
 
 - pnpm-lock.yaml の frozen 設定
 - ライブラリ選定理由
-- テスト設計
 
 ## Security & Anti-Abuse (Bot対策)
 
