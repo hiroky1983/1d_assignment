@@ -1,15 +1,64 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/lib/env'
-import { SearchResponse } from '@/features/search/types'
+import { SearchResponse, searchParamsSchema } from '@/features/search/types'
+import { rateLimit } from '@/lib/ratelimit'
+
+const limiter = rateLimit({
+  interval: 10 * 1000, // 10 seconds
+  uniqueTokenPerInterval: 500,
+})
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
+    // Rate Limit Check
+    // Use platform provided IP first (secure), then fallback to header parsing
+    const forwardedFor = request.headers.get('x-forwarded-for')
+    const ip =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (request as any).ip ||
+      (forwardedFor ? forwardedFor.split(',')[0].trim() : null) ||
+      request.headers.get('x-real-ip') ||
+      '127.0.0.1'
+
+    const { isRateLimited, limit, currentUsage } = limiter.check(10, ip) // Limit 10 requests per minute
+
+    if (isRateLimited) {
+      return NextResponse.json(
+        { message: 'Too Many Requests' },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': Math.max(
+              0,
+              limit - currentUsage,
+            ).toString(),
+          },
+        },
+      )
+    }
+
     const { searchParams } = new URL(request.url)
-    const q = searchParams.get('q')
-    const page = searchParams.get('page') || '1'
-    const per_page = searchParams.get('per_page') || '10'
+
+    // Zod Validation
+    const parseResult = searchParamsSchema.safeParse({
+      q: searchParams.get('q') || undefined,
+      page: searchParams.get('page'),
+    })
+
+    if (!parseResult.success) {
+      return NextResponse.json(
+        {
+          message: 'Invalid parameters',
+          errors: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      )
+    }
+
+    const { q, page, per_page } = parseResult.data
 
     if (!q) {
       return NextResponse.json(

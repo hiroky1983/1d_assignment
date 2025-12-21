@@ -2,11 +2,11 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Star } from 'lucide-react'
-import { GitHubRepo } from '../types'
+import { Repository } from '../types'
 import { Skeleton } from '@/components/ui/Skeleton'
 
 interface RepoListProps {
-  repos: GitHubRepo[]
+  repos: Repository[]
   currentQuery?: string
   currentPage?: number
 }

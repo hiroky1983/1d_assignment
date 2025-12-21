@@ -13,6 +13,11 @@ test('SearchInput triggers search on Button click', async () => {
   // RHF needs change event to update internal state.
   fireEvent.change(input, { target: { value: 'test' } })
 
+  // Wait for validation to pass and button to be enabled
+  await waitFor(() => {
+    expect(button).not.toBeDisabled()
+  })
+
   // Click button -> submit
   fireEvent.click(button)
 

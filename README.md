@@ -366,7 +366,6 @@ export const env = envSchema.parse({
 
 todo
 
-- vercel デプロイ設定
 - 各 AI エージェントのルール設定
 - playwright の設定
 - pnpm-lock.yaml の frozen 設定
@@ -375,3 +374,22 @@ todo
   - Input
 - ライブラリ選定理由
 - テスト設計
+
+## Security & Anti-Abuse (Bot対策)
+
+公開APIを利用するアプリケーションとして、Botによる乱用やDoS攻撃（APIレートリミット枯渇）を防ぐために、多層的な防御策を講じています。
+
+### 1. Rate Limiting (速度制限)
+
+- **Tech**: `lru-cache` (In-Memory)
+- **Strategy**: IPアドレスごとに **10秒間に10リクエスト** の制限を設けています。
+- **Benefit**: 特定のユーザーやBotによる短期間の大量アクセスを遮断し、GitHub APIのトークン枯渇を防ぎます（全ユーザーへのサービス停止を回避）。
+
+### 2. Input Validation (入力検証)
+
+- **Server-Side**: Zodによる厳格な型チェックに加え、検索クエリの最大文字数を **100文字** に制限。異常に長いペイロードによる攻撃を水際で阻止します。
+- **Client-Side**: `react-hook-form` によるリアルタイムバリデーション。100文字を超えた時点でエラーメッセージを表示し、無駄なリクエスト送信を抑制します。
+
+### 3. Architecture
+
+- **BFF Pattern**: クライアントからGitHub APIを直接叩かず、Next.js Route Handlerを経由することで、アクセストークンを隠蔽し、上記のような統制ポイントを一箇所に集約しています。
