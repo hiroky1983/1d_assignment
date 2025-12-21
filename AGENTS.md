@@ -15,7 +15,7 @@ GitHub リポジトリ検索アプリケーション（Next.js 16 App Router）
 pnpm dev           # 開発サーバー起動
 pnpm test          # ユニットテスト (Vitest)
 pnpm test:ci       # ユニットテスト (CI用)
-npx playwright test # E2Eテスト
+pnpm test:e2e      # E2Eテスト (Playwright)
 pnpm lint          # ESLint実行
 pnpm fmt           # lint + prettier自動修正
 ```
@@ -85,7 +85,7 @@ lib/              - ユーティリティ（Server）
 ### ツール
 
 - **ユニットテスト**: Vitest + Testing Library（`pnpm test`）
-- **E2Eテスト**: Playwright（`npx playwright test`）
+- **E2Eテスト**: Playwright（`pnpm test:e2e`）
 - **APIモック**: MSW（`tests/mocks/handlers.ts`）
 
 ## コーディング規約 (Coding Standards)

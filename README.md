@@ -40,7 +40,13 @@
 
 - **ユニットテスト (Vitest)**
   ```bash
-  pnpm test
+  pnpm test        # ウォッチモード
+  pnpm test:ci     # CI用 (シングルラン)
+  ```
+- **E2Eテスト (Playwright)**
+  ```bash
+  pnpm test:e2e    # ヘッドレスモード
+  pnpm test:e2e:ui # UIモード
   ```
 - **リント (ESLint)**
   ```bash
@@ -366,8 +372,6 @@ export const env = envSchema.parse({
 
 todo
 
-- 各 AI エージェントのルール設定
-- playwright の設定
 - pnpm-lock.yaml の frozen 設定
 - ui コンポーネントの追加
   - Button
