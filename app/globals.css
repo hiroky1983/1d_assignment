@@ -1,24 +1,41 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Semantic tokens - Colors */
+  --bg-app: #f9fafb; /* gray-50 */
+  --bg-card: #ffffff; /* white */
+  --bg-hover: #f3f4f6; /* gray-100 */
+  --border-subtle: #e5e7eb; /* gray-200 */
+  --text-main: #111827; /* gray-900 */
+  --text-muted: #6b7280; /* gray-500 */
+  --text-disabled: #d1d5db; /* gray-300 */
+
+  --primary: #2563eb; /* blue-600 */
+  --primary-foreground: #ffffff;
+  --error: #ef4444; /* red-500 */
+
+  /* Default background/foreground */
+  --background: var(--bg-app);
+  --foreground: var(--text-main);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-app-bg: var(--bg-app);
+  --color-app-card: var(--bg-card);
+  --color-app-bg-hover: var(--bg-hover);
+  --color-app-border: var(--border-subtle);
+  --color-app-text-main: var(--text-main);
+  --color-app-text-muted: var(--text-muted);
+  --color-app-text-disabled: var(--text-disabled);
+
+  --color-app-primary: var(--primary);
+  --color-app-primary-foreground: var(--primary-foreground);
+  --color-app-error: var(--error);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-primary: #2563eb;
   --color-primary-foreground: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

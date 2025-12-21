@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 
 /**
  * 共通ヘッダーコンポーネント (UI)
@@ -7,11 +6,11 @@ import React from 'react'
  */
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/80 p-4 backdrop-blur-md">
+    <header className="border-app-border bg-app-card/80 sticky top-0 z-50 border-b p-4 backdrop-blur-md">
       <div className="container mx-auto flex items-center justify-between">
         <Link
           href="/"
-          className="bg-linear-to-r from-blue-600 to-violet-600 bg-clip-text text-xl font-bold text-transparent"
+          className="from-app-primary bg-linear-to-r to-violet-600 bg-clip-text text-xl font-bold text-transparent"
         >
           GitHub Search
         </Link>

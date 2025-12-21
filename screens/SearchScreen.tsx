@@ -19,14 +19,14 @@ const SearchScreenContent = () => {
     useSearch()
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 font-sans text-gray-900">
+    <div className="bg-app-bg text-app-text-main min-h-screen pb-20 font-sans">
       {/* Header moved to layout */}
       <main className="container mx-auto flex flex-col items-center px-4 py-8">
         <div className="mb-8 text-center">
-          <h1 className="mb-4 bg-linear-to-r from-gray-900 to-gray-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent">
+          <h1 className="from-app-text-main to-app-text-muted mb-4 bg-linear-to-r bg-clip-text text-4xl font-extrabold tracking-tight text-transparent">
             Find Repositories
           </h1>
-          <p className="text-gray-500">
+          <p className="text-app-text-muted">
             Search for GitHub repositories by name, description, or topic.
           </p>
         </div>
@@ -45,7 +45,7 @@ const SearchScreenContent = () => {
           ) : data?.items ? (
             data.items.length > 0 ? (
               <>
-                <div className="mx-auto mb-4 w-full max-w-7xl text-right text-sm text-gray-500">
+                <div className="text-app-text-muted mx-auto mb-4 w-full max-w-7xl text-right text-sm">
                   Found {data.total_count.toLocaleString()} results
                 </div>
                 <RepoList
@@ -77,7 +77,7 @@ export const SearchScreen = () => {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gray-50">
+        <div className="bg-app-bg min-h-screen">
           {/* Header is now in layout */}
           <LoadingState />
         </div>

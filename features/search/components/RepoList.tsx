@@ -1,7 +1,6 @@
 import { Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
 import { Skeleton } from '@/components/ui/Skeleton'
 
@@ -35,7 +34,7 @@ export const RepoList = ({
           href={`/repo/${repo.owner.login}/${repo.name}${queryString ? `?${queryString}` : ''}`}
           className="group block"
         >
-          <article className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md sm:flex-row sm:items-start">
+          <article className="border-app-border bg-app-card flex flex-col gap-4 rounded-xl border p-6 shadow-sm transition-all duration-200 hover:shadow-md sm:flex-row sm:items-start">
             <div className="shrink-0">
               <Image
                 src={repo.owner.avatar_url}
@@ -48,19 +47,19 @@ export const RepoList = ({
 
             <div className="min-w-0 flex-1">
               <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
-                <h3 className="truncate text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
+                <h3 className="text-app-text-main truncate text-xl font-bold transition-colors group-hover:text-blue-600">
                   {repo.name}
                 </h3>
-                <p className="truncate text-sm text-gray-500">
+                <p className="text-app-text-muted truncate text-sm">
                   {repo.owner.login}
                 </p>
               </div>
 
-              <p className="mb-4 line-clamp-2 text-sm text-gray-600 sm:line-clamp-3">
+              <p className="text-app-text-muted mb-4 line-clamp-2 text-sm sm:line-clamp-3">
                 {repo.description || 'No description available'}
               </p>
 
-              <div className="flex items-center gap-6 text-sm text-gray-500">
+              <div className="text-app-text-muted flex items-center gap-6 text-sm">
                 <span className="flex items-center" title="Stars">
                   <Star className="mr-1.5 h-4 w-4 fill-current text-yellow-500" />
                   {repo.stargazers_count.toLocaleString()}
@@ -89,7 +88,7 @@ export const RepoListSkeleton = () => {
       {[...Array(6)].map((_, i) => (
         <div
           key={i}
-          className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 sm:flex-row"
+          className="border-app-border bg-app-card flex flex-col gap-4 rounded-xl border p-6 sm:flex-row"
         >
           <div className="shrink-0">
             <Skeleton className="h-12 w-12 rounded-full sm:h-14 sm:w-14" />
