@@ -30,7 +30,8 @@ export type SearchResponse = z.infer<typeof searchResponseSchema>
 
 export const searchParamsSchema = z.object({
   q: z.string().max(100, { message: 'Max 100 characters allowed' }).optional(),
-  page: z.coerce.number().int().positive().default(20),
+  page: z.coerce.number().int().positive().default(1),
+  per_page: z.coerce.number().int().positive().default(20),
 })
 
 export type SearchParams = z.infer<typeof searchParamsSchema>

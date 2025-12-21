@@ -60,6 +60,7 @@ export function useSearch() {
     (newPage: number) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set('page', newPage.toString())
+      params.set('per_page', '20')
       router.push(`/?${params.toString()}`)
     },
     [router, searchParams],

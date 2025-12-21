@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const { q, page } = parseResult.data
+    const { q, page, per_page } = parseResult.data
 
     if (!q) {
       return NextResponse.json(
@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
     }
 
     const res = await fetch(
-      `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&page=${page}`,
+      `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&page=${page}&per_page=${per_page}`,
       {
         headers: {
           ...(env.GITHUB_TOKEN
