@@ -46,7 +46,8 @@ export async function GET(request: NextRequest) {
     // Zod Validation
     const parseResult = searchParamsSchema.safeParse({
       q: searchParams.get('q') || undefined,
-      page: searchParams.get('page'),
+      page: searchParams.get('page') || undefined,
+      per_page: searchParams.get('per_page') || undefined,
     })
 
     if (!parseResult.success) {
