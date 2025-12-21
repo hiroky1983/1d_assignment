@@ -27,7 +27,7 @@ export async function GET(request: Request) {
             : {}),
           Accept: 'application/vnd.github.v3+json',
         },
-        next: { revalidate: 60 }, // Cache for 60 seconds
+        next: { revalidate: 300 }, // Cache for 5 minutes
       },
     )
 

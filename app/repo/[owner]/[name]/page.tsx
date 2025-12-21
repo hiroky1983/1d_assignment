@@ -17,7 +17,7 @@ async function getRepo(owner: string, name: string): Promise<RepoDetail> {
         : {}),
       Accept: 'application/vnd.github.v3+json',
     },
-    next: { revalidate: 60 },
+    next: { revalidate: 300 },
   })
 
   if (!res.ok) {
