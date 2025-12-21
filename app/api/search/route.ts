@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { env } from '@/lib/env'
-import { SearchResponse } from '@/features/search/types'
+import { SearchResponse, searchParamsSchema } from '@/features/search/types'
 import { rateLimit } from '@/lib/ratelimit'
 
 const limiter = rateLimit({
@@ -36,9 +36,24 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url)
-    const q = searchParams.get('q')
-    const page = searchParams.get('page') || '1'
-    const per_page = searchParams.get('per_page') || '20'
+
+    // Zod Validation
+    const parseResult = searchParamsSchema.safeParse({
+      q: searchParams.get('q') || undefined,
+      page: searchParams.get('page'),
+    })
+
+    if (!parseResult.success) {
+      return NextResponse.json(
+        {
+          message: 'Invalid parameters',
+          errors: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      )
+    }
+
+    const { q, page } = parseResult.data
 
     if (!q) {
       return NextResponse.json(
@@ -47,16 +62,8 @@ export async function GET(request: Request) {
       )
     }
 
-    // Validation: Max Length 100
-    if (q.length > 100) {
-      return NextResponse.json(
-        { message: 'Query too long (max 100 characters)' },
-        { status: 400 },
-      )
-    }
-
     const res = await fetch(
-      `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&page=${page}&per_page=${per_page}`,
+      `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&page=${page}`,
       {
         headers: {
           ...(env.GITHUB_TOKEN
