@@ -26,40 +26,41 @@ export const RepoList = ({
   const queryString = searchParams.toString()
 
   return (
-    <div className="mt-8 grid w-full max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto mt-8 flex w-full max-w-4xl flex-col gap-4">
       {repos.map((repo) => (
         <Link
           key={repo.id}
           href={`/repo/${repo.owner.login}/${repo.name}${queryString ? `?${queryString}` : ''}`}
-          className="group block h-full"
+          className="group block"
         >
-          <article className="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg">
-            <div className="mb-4 flex items-center">
+          <article className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md sm:flex-row sm:items-start">
+            <div className="shrink-0">
               <Image
                 src={repo.owner.avatar_url}
                 alt={`${repo.owner.login} avatar`}
                 width={80}
                 height={80}
-                className="mr-3 h-10 w-10 rounded-full border border-gray-100"
+                className="h-12 w-12 rounded-full border border-gray-100 sm:h-14 sm:w-14"
               />
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate text-lg font-bold text-gray-900 transition-colors group-hover:text-blue-600">
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
+                <h3 className="truncate text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
                   {repo.name}
                 </h3>
                 <p className="truncate text-sm text-gray-500">
                   {repo.owner.login}
                 </p>
               </div>
-            </div>
 
-            <p className="mb-4 line-clamp-3 grow text-sm text-gray-600">
-              {repo.description || 'No description available'}
-            </p>
+              <p className="mb-4 line-clamp-2 text-sm text-gray-600 sm:line-clamp-3">
+                {repo.description || 'No description available'}
+              </p>
 
-            <div className="mt-auto flex items-center justify-between border-t border-gray-50 pt-4 text-sm text-gray-500">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-6 text-sm text-gray-500">
                 <span className="flex items-center" title="Stars">
-                  <Star className="mr-1 h-4 w-4 fill-current text-yellow-500" />
+                  <Star className="mr-1.5 h-4 w-4 fill-current text-yellow-500" />
                   {repo.stargazers_count.toLocaleString()}
                 </span>
                 {repo.language && (
@@ -82,25 +83,26 @@ export const RepoList = ({
  */
 export const RepoListSkeleton = () => {
   return (
-    <div className="mt-8 grid w-full max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto mt-8 flex w-full max-w-4xl flex-col gap-4">
       {[...Array(6)].map((_, i) => (
         <div
           key={i}
-          className="flex h-64 flex-col rounded-xl border border-gray-200 bg-white p-6"
+          className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 sm:flex-row"
         >
-          <div className="mb-4 flex items-center">
-            <Skeleton className="mr-3 h-10 w-10 rounded-full" />
-            <div className="flex-1">
-              <Skeleton className="mb-2 h-6 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
+          <div className="shrink-0">
+            <Skeleton className="h-12 w-12 rounded-full sm:h-14 sm:w-14" />
           </div>
-          <Skeleton className="mb-2 h-4 w-full" />
-          <Skeleton className="mb-2 h-4 w-full" />
-          <Skeleton className="mb-4 h-4 w-2/3" />
-          <div className="mt-auto flex justify-between pt-4">
-            <Skeleton className="h-4 w-1/4" />
-            <Skeleton className="h-4 w-1/4" />
+          <div className="flex-1">
+            <div className="mb-2 flex items-baseline gap-2">
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+            <Skeleton className="mb-2 h-4 w-full" />
+            <Skeleton className="mb-4 h-4 w-2/3" />
+            <div className="flex gap-6">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-24" />
+            </div>
           </div>
         </div>
       ))}
