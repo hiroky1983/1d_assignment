@@ -1,9 +1,11 @@
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
 import { Star } from 'lucide-react'
-import { Repository } from '../types'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
+
 import { Skeleton } from '@/components/ui/Skeleton'
+
+import { Repository } from '../types'
 
 interface RepoListProps {
   repos: Repository[]

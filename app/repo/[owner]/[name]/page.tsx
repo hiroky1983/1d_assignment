@@ -1,8 +1,9 @@
+import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+
+import { RepoDetail } from '@/features/repo-detail/types'
 import { env } from '@/lib/env'
 import { RepoDetailScreen } from '@/screens/RepoDetailScreen'
-import { RepoDetail } from '@/features/repo-detail/types'
-import { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ owner: string; name: string }>

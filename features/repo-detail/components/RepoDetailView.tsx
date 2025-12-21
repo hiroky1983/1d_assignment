@@ -1,5 +1,6 @@
+import { CircleDot, ExternalLink, Eye, GitFork, Star } from 'lucide-react'
 import Image from 'next/image'
-import { Star, GitFork, Eye, CircleDot, ExternalLink } from 'lucide-react'
+
 import { RepoDetail } from '../types'
 
 interface RepoDetailViewProps {

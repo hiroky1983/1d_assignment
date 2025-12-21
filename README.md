@@ -373,9 +373,6 @@ export const env = envSchema.parse({
 todo
 
 - pnpm-lock.yaml の frozen 設定
-- ui コンポーネントの追加
-  - Button
-  - Input
 - ライブラリ選定理由
 - テスト設計
 

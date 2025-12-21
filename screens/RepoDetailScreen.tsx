@@ -1,6 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
+
 import { RepoDetailView } from '@/features/repo-detail/components/RepoDetailView'
 import { RepoDetail } from '@/features/repo-detail/types'
 

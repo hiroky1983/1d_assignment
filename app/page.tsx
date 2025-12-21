@@ -1,5 +1,6 @@
-import { SearchScreen } from '@/screens/SearchScreen'
 import { Metadata } from 'next'
+
+import { SearchScreen } from '@/screens/SearchScreen'
 
 export const metadata: Metadata = {
   title: 'GitHub Repository Search',

@@ -1,5 +1,5 @@
-import React from 'react'
 import { SearchX } from 'lucide-react'
+import React from 'react'
 
 /**
  * 空状態表示コンポーネント (UI)

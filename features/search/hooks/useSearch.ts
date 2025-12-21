@@ -1,9 +1,10 @@
-import useSWR from 'swr'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import useSWR from 'swr'
+
+import { fetcher } from '@/lib/fetcher'
 
 import { SearchResponse } from '../types'
-import { fetcher } from '@/lib/fetcher'
 
 export function useSearch() {
   const router = useRouter()

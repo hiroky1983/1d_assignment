@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 test.describe('Security & Bot Protection', () => {
   test('Client-side validation: Max length 100', async ({ page }) => {

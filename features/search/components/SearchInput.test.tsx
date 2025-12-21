@@ -1,5 +1,6 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { expect, test, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+
 import { SearchInput } from './SearchInput'
 
 test('SearchInput triggers search on Button click', async () => {

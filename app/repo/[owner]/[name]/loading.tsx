@@ -1,6 +1,7 @@
+import { ArrowLeft } from 'lucide-react'
+
 import { Header } from '@/components/layout/Header'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { ArrowLeft } from 'lucide-react'
 
 /**
  * リポジトリ詳細ローディング画面 (Server Component)

@@ -2,5 +2,8 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.singleQuote": true,
-  "prettier.semi": false
+  "prettier.semi": false,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
 }

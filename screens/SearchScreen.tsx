@@ -1,13 +1,14 @@
 'use client'
 
 import { Suspense } from 'react'
-import { SearchInput } from '@/features/search/components/SearchInput'
-import { RepoList } from '@/features/search/components/RepoList'
-import { Pagination } from '@/features/search/components/Pagination'
-import { useSearch } from '@/features/search/hooks/useSearch'
-import { LoadingState } from '@/components/states/LoadingState'
-import { ErrorState } from '@/components/states/ErrorState'
+
 import { EmptyState } from '@/components/states/EmptyState'
+import { ErrorState } from '@/components/states/ErrorState'
+import { LoadingState } from '@/components/states/LoadingState'
+import { Pagination } from '@/features/search/components/Pagination'
+import { RepoList } from '@/features/search/components/RepoList'
+import { SearchInput } from '@/features/search/components/SearchInput'
+import { useSearch } from '@/features/search/hooks/useSearch'
 
 /**
  * 検索画面のコンテンツコンポーネント (Client Component)

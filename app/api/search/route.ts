@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+
+import { searchParamsSchema, SearchResponse } from '@/features/search/types'
 import { env } from '@/lib/env'
-import { SearchResponse, searchParamsSchema } from '@/features/search/types'
 import { rateLimit } from '@/lib/ratelimit'
 
 const limiter = rateLimit({
