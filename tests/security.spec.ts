@@ -27,14 +27,19 @@ test.describe('Security & Bot Protection', () => {
   // Note: Rate limit test is tricky in shared environment.
   // We can try to trigger it by hitting the API endpoint directly via request context.
   test('Server-side: Rate limit (429) protection', async ({ request }) => {
-    // Send 15 requests quickly (limit is 10 per 10 seconds)
-    // Note: This might affect other tests or be flaky if limit is shared.
-    // Ideally use a separate test env or mock strict rate limit behavior.
+    // Generate a random IP to isolate this test run from others
+    const randomIp = `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`
 
     let rateLimited = false
 
+    // Send 15 requests quickly (limit is 10 per 10 seconds)
     for (let i = 0; i < 15; i++) {
-      const response = await request.get('/api/search?q=test')
+      const response = await request.get('/api/search?q=test', {
+        headers: {
+          'X-Forwarded-For': randomIp,
+        },
+      })
+
       if (response.status() === 429) {
         rateLimited = true
         break
