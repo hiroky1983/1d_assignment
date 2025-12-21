@@ -13,8 +13,8 @@ interface RepoDetailViewProps {
  */
 export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-      <div className="border-b border-gray-100 bg-linear-to-r from-gray-50 to-white p-8">
+    <div className="border-app-border bg-app-card overflow-hidden rounded-xl border shadow-sm">
+      <div className="border-app-border from-app-bg to-app-card border-b bg-linear-to-r p-8">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="flex items-center gap-6">
             <Image
@@ -26,10 +26,12 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
               priority
             />
             <div>
-              <h1 className="flex items-center gap-2 text-3xl font-bold text-gray-900">
+              <h1 className="text-app-text-main flex items-center gap-2 text-3xl font-bold">
                 {repo.name}
-                <span className="text-xl font-normal text-gray-400">/</span>
-                <span className="text-gray-600">{repo.owner.login}</span>
+                <span className="text-app-text-muted text-xl font-normal">
+                  /
+                </span>
+                <span className="text-app-text-muted">{repo.owner.login}</span>
               </h1>
               {repo.language && (
                 <div className="mt-2 flex items-center text-gray-600">
@@ -44,7 +46,7 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center rounded-lg bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800"
+            className="bg-app-text-main flex items-center justify-center rounded-lg px-6 py-3 font-medium text-white transition-colors hover:opacity-90"
           >
             View on GitHub
             <ExternalLink className="ml-2 h-4 w-4" />
@@ -53,7 +55,7 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
       </div>
 
       <div className="p-8">
-        <p className="mb-8 max-w-4xl text-xl leading-relaxed text-gray-600">
+        <p className="text-app-text-muted mb-8 max-w-4xl text-xl leading-relaxed">
           {repo.description || 'No description provided.'}
         </p>
 
@@ -89,7 +91,7 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
               {repo.topics.map((topic) => (
                 <span
                   key={topic}
-                  className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                  className="bg-app-bg text-app-text-muted hover:bg-app-border rounded-full px-3 py-1 text-sm font-medium transition-colors"
                 >
                   {topic}
                 </span>
@@ -116,9 +118,9 @@ const StatCard = ({
   value: number
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-gray-100 bg-gray-50 p-4 text-center">
-      <div className="mb-2 rounded-full bg-white p-2 shadow-sm">{icon}</div>
-      <div className="text-2xl font-bold text-gray-900">
+    <div className="border-app-border bg-app-bg flex flex-col items-center justify-center rounded-lg border p-4 text-center">
+      <div className="bg-app-card mb-2 rounded-full p-2 shadow-sm">{icon}</div>
+      <div className="text-app-text-main text-2xl font-bold">
         {value.toLocaleString()}
       </div>
       <div className="text-sm text-gray-500">{label}</div>

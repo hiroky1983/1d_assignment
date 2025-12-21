@@ -1,5 +1,4 @@
 import { SearchX } from 'lucide-react'
-import React from 'react'
 
 /**
  * 空状態表示コンポーネント (UI)
@@ -11,11 +10,11 @@ export const EmptyState = ({
   message?: string
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-      <div className="mb-4 rounded-full bg-gray-100 p-4">
-        <SearchX className="h-8 w-8 text-gray-400" />
+    <div className="text-app-text-muted flex flex-col items-center justify-center py-16">
+      <div className="bg-app-bg-hover mb-4 rounded-full p-4">
+        <SearchX className="text-app-text-disabled h-8 w-8" />
       </div>
-      <p className="text-lg font-medium">{message}</p>
+      <p className="text-app-text-main text-lg font-medium">{message}</p>
       <p className="mt-2 text-sm">Try adjusting your search query.</p>
     </div>
   )

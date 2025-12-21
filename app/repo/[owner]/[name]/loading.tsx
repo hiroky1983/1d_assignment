@@ -9,18 +9,18 @@ import { Skeleton } from '@/components/ui/Skeleton'
  */
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+    <div className="bg-app-bg min-h-screen pb-20 font-sans">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6 inline-flex items-center text-gray-500">
-          <div className="mr-2 rounded-full border border-gray-200 bg-white p-2 shadow-sm">
+        <div className="text-app-text-muted mb-6 inline-flex items-center">
+          <div className="border-app-border bg-app-card mr-2 rounded-full border p-2 shadow-sm">
             <ArrowLeft className="h-5 w-5" />
           </div>
           Back to Search
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-          <div className="border-b border-gray-100 bg-gray-50/50 p-8">
+        <div className="border-app-border bg-app-card overflow-hidden rounded-xl border shadow-sm">
+          <div className="border-app-border bg-app-bg/50 border-b p-8">
             <div className="flex flex-col justify-between gap-6 md:flex-row">
               <div className="flex items-center gap-6">
                 <Skeleton className="h-20 w-20 rounded-full" />

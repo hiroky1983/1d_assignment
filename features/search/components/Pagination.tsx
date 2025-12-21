@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -32,17 +31,17 @@ export const Pagination = ({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
         className={cn(
-          'rounded-md border border-gray-200 p-2 transition-colors',
+          'border-app-border rounded-md border p-2 transition-colors',
           currentPage <= 1
-            ? 'cursor-not-allowed text-gray-300'
-            : 'text-gray-600 hover:bg-gray-100',
+            ? 'text-app-text-disabled cursor-not-allowed'
+            : 'text-app-text-muted hover:bg-app-bg-hover',
         )}
         aria-label="Previous page"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
 
-      <span className="text-sm font-medium text-gray-600">
+      <span className="text-app-text-muted text-sm font-medium">
         Page {currentPage} of {totalPages}
       </span>
 
@@ -50,10 +49,10 @@ export const Pagination = ({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
         className={cn(
-          'rounded-md border border-gray-200 p-2 transition-colors',
+          'border-app-border rounded-md border p-2 transition-colors',
           currentPage >= totalPages
-            ? 'cursor-not-allowed text-gray-300'
-            : 'text-gray-600 hover:bg-gray-100',
+            ? 'text-app-text-disabled cursor-not-allowed'
+            : 'text-app-text-muted hover:bg-app-bg-hover',
         )}
         aria-label="Next page"
       >

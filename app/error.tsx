@@ -20,7 +20,7 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="bg-app-bg flex min-h-screen items-center justify-center">
       <ErrorState error={error} reset={reset} />
     </div>
   )

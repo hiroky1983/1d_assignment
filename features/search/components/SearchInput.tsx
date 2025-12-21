@@ -65,9 +65,9 @@ export const SearchInput = ({
       onSubmit={handleSubmit(onSubmit)}
       className="group relative w-full max-w-2xl"
     >
-      <div className="absolute -inset-1 rounded-lg bg-linear-to-r from-blue-600 to-violet-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
+      <div className="from-app-primary absolute -inset-1 rounded-lg bg-linear-to-r to-violet-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
       <div className="relative">
-        <Search className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
+        <Search className="text-app-text-muted pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 transform" />
         <input
           type="search"
           {...register('query', {
@@ -78,28 +78,29 @@ export const SearchInput = ({
           onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={handleKeyDown}
           placeholder="Search GitHub repositories..."
+          aria-label="Search GitHub repositories"
           className={cn(
-            'w-full rounded-lg border border-gray-200 bg-white p-4 pr-24 pl-12 text-lg shadow-xl',
-            'transition-all duration-300 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500',
-            'placeholder-gray-400 disabled:opacity-50',
+            'border-app-border bg-app-card text-app-text-main w-full rounded-lg border p-4 pr-24 pl-12 text-lg shadow-xl',
+            'focus:ring-app-primary transition-all duration-300 outline-none focus:border-transparent focus:ring-2',
+            'placeholder-app-text-muted disabled:opacity-50',
           )}
           disabled={isLoading && !queryValue}
         />
         <button
           type="submit"
-          className="absolute top-1/2 right-2 -translate-y-1/2 transform rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="bg-app-primary text-app-primary-foreground absolute top-1/2 right-2 -translate-y-1/2 transform rounded-md px-4 py-2 transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isLoading || !queryValue || !isValid}
         >
           Search
         </button>
         {isLoading && (
           <div className="absolute top-1/2 right-24 mr-2 -translate-y-1/2 transform">
-            <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-blue-600"></div>
+            <div className="border-app-primary h-5 w-5 animate-spin rounded-full border-b-2"></div>
           </div>
         )}
       </div>
       {errors.query && (
-        <p className="mt-2 text-sm text-red-500">{errors.query.message}</p>
+        <p className="text-app-error mt-2 text-sm">{errors.query.message}</p>
       )}
     </form>
   )
