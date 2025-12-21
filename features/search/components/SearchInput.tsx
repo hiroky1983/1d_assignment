@@ -100,7 +100,7 @@ export const SearchInput = ({
         )}
       </div>
       {errors.query && (
-        <p className="mt-2 text-sm text-red-500">{errors.query.message}</p>
+        <p className="text-app-error mt-2 text-sm">{errors.query.message}</p>
       )}
     </form>
   )
