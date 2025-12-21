@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/lib/env'
 import { SearchResponse, searchParamsSchema } from '@/features/search/types'
 import { rateLimit } from '@/lib/ratelimit'
@@ -10,13 +10,18 @@ const limiter = rateLimit({
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // Rate Limit Check
+    // Use platform provided IP first (secure), then fallback to header parsing
+    const forwardedFor = request.headers.get('x-forwarded-for')
     const ip =
-      request.headers.get('x-forwarded-for') ||
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (request as any).ip ||
+      (forwardedFor ? forwardedFor.split(',')[0].trim() : null) ||
       request.headers.get('x-real-ip') ||
       '127.0.0.1'
+
     const { isRateLimited, limit, currentUsage } = limiter.check(10, ip) // Limit 10 requests per minute
 
     if (isRateLimited) {
