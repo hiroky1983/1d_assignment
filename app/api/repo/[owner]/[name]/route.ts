@@ -3,8 +3,6 @@ import { NextResponse } from 'next/server'
 import { RepoDetail } from '@/features/repo-detail/types'
 import { env } from '@/lib/env'
 
-export const dynamic = 'force-dynamic'
-
 export async function GET(
   request: Request,
   props: { params: Promise<{ owner: string; name: string }> },
@@ -40,6 +38,14 @@ export async function GET(
     const data: RepoDetail = await res.json()
     return NextResponse.json(data)
   } catch (error) {
+    if (
+      error instanceof Error &&
+      (error as { digest?: string }).digest?.startsWith(
+        'NEXT_PRERENDER_INTERRUPTED',
+      )
+    ) {
+      throw error
+    }
     console.error('Repo Detail API Error:', error)
     return NextResponse.json(
       { message: 'Internal Server Error' },

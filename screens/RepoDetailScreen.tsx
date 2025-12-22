@@ -1,15 +1,10 @@
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-
-import { RepoDetailView } from '@/features/repo-detail/components/RepoDetailView'
-import { RepoDetail } from '@/features/repo-detail/types'
+import { Suspense } from 'react'
 
 interface RepoDetailScreenProps {
-  repo: RepoDetail
-  searchParams?: {
-    q?: string
-    page?: number
-  }
+  children: React.ReactNode
+  searchParamsPromise: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 /**
@@ -17,29 +12,60 @@ interface RepoDetailScreenProps {
  * リポジトリ詳細情報の全体レイアウトを担当します。
  */
 export const RepoDetailScreen = ({
-  repo,
-  searchParams,
+  children,
+  searchParamsPromise,
 }: RepoDetailScreenProps) => {
-  const backQuery = new URLSearchParams()
-  if (searchParams?.q) backQuery.set('q', searchParams.q)
-  if (searchParams?.page && searchParams.page > 1)
-    backQuery.set('page', searchParams.page.toString())
-  const backHref = backQuery.toString() ? `/?${backQuery.toString()}` : '/'
-
   return (
     <div className="bg-app-bg pb-20 font-sans">
       <main className="container mx-auto px-4 py-8">
-        <Link
-          href={backHref}
-          className="group text-app-text-muted hover:text-app-text-main mb-6 inline-flex items-center transition-colors"
+        <Suspense
+          fallback={
+            <div className="text-app-text-muted mb-6 inline-flex items-center opacity-50">
+              <div className="border-app-border bg-app-card mr-2 rounded-full border p-2 shadow-sm">
+                <ArrowLeft className="h-5 w-5" />
+              </div>
+              Back to Search
+            </div>
+          }
         >
-          <div className="border-app-border bg-app-card group-hover:border-app-text-muted mr-2 rounded-full border p-2 shadow-sm">
-            <ArrowLeft className="h-5 w-5" />
-          </div>
-          Back to Search
-        </Link>
-        <RepoDetailView repo={repo} />
+          <BackLink searchParamsPromise={searchParamsPromise} />
+        </Suspense>
+        {children}
       </main>
     </div>
+  )
+}
+
+/**
+ * 検索へ戻るリンク (Internal)
+ * searchParams を待機するため個別に Suspense されます。
+ */
+const BackLink = async ({
+  searchParamsPromise,
+}: {
+  searchParamsPromise: Promise<{ [key: string]: string | string[] | undefined }>
+}) => {
+  const searchParams = await searchParamsPromise
+  const q = typeof searchParams.q === 'string' ? searchParams.q : undefined
+  const page =
+    typeof searchParams.page === 'string'
+      ? parseInt(searchParams.page)
+      : undefined
+
+  const backQuery = new URLSearchParams()
+  if (q) backQuery.set('q', q)
+  if (page && page > 1) backQuery.set('page', page.toString())
+  const backHref = backQuery.toString() ? `/?${backQuery.toString()}` : '/'
+
+  return (
+    <Link
+      href={backHref}
+      className="group text-app-text-muted hover:text-app-text-main mb-6 inline-flex items-center transition-colors"
+    >
+      <div className="border-app-border bg-app-card group-hover:border-app-text-muted mr-2 rounded-full border p-2 shadow-sm">
+        <ArrowLeft className="h-5 w-5" />
+      </div>
+      Back to Search
+    </Link>
   )
 }

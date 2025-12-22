@@ -1,17 +1,45 @@
 import { CircleDot, ExternalLink, Eye, GitFork, Star } from 'lucide-react'
 import Image from 'next/image'
 
+import { Skeleton } from '@/components/ui/Skeleton'
+import { env } from '@/lib/env'
+
 import { RepoDetail } from '../types'
 
 interface RepoDetailViewProps {
-  repo: RepoDetail
+  paramsPromise: Promise<{ owner: string; name: string }>
 }
 
 /**
- * リポジトリ詳細表示コンポーネント (Server Component compatible)
- * リポジトリの詳細情報、統計、トピック等を表示します。
+ * リポジトリ詳細データを取得する関数 (Server-side only)
  */
-export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
+async function getRepo(owner: string, name: string): Promise<RepoDetail> {
+  const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, {
+    headers: {
+      ...(env.GITHUB_TOKEN
+        ? { Authorization: `Bearer ${env.GITHUB_TOKEN}` }
+        : {}),
+      Accept: 'application/vnd.github.v3+json',
+    },
+    next: { revalidate: 300 },
+  })
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch repository')
+  }
+
+  return res.json()
+}
+
+/**
+ * リポジトリ詳細表示コンポーネント (Server Component)
+ */
+export const RepoDetailView = async ({
+  paramsPromise,
+}: RepoDetailViewProps) => {
+  const { owner, name } = await paramsPromise
+  const repo = await getRepo(owner, name)
+
   return (
     <div className="border-app-border bg-app-card overflow-hidden rounded-xl border shadow-sm">
       <div className="border-app-border from-app-bg to-app-card border-b bg-linear-to-r p-8">
@@ -105,6 +133,46 @@ const StatCard = ({
         {value.toLocaleString()}
       </div>
       <div className="text-sm text-gray-500">{label}</div>
+    </div>
+  )
+}
+
+/**
+ * リポジトリ詳細表示のスケルトン
+ */
+export const RepoDetailSkeleton = () => {
+  return (
+    <div className="border-app-border bg-app-card overflow-hidden rounded-xl border shadow-sm">
+      <div className="border-app-border from-app-bg to-app-card animate-pulse border-b bg-linear-to-r p-8">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+          <div className="flex items-center gap-6">
+            <Skeleton className="h-20 w-20 rounded-full border-4 border-white shadow-md" />
+            <div>
+              <Skeleton className="mb-2 h-9 w-64" />
+              <Skeleton className="h-5 w-32" />
+            </div>
+          </div>
+          <Skeleton className="h-12 w-40 rounded-lg" />
+        </div>
+      </div>
+
+      <div className="p-8">
+        <Skeleton className="mb-4 h-6 w-full max-w-2xl" />
+        <Skeleton className="mb-8 h-6 w-3/4 max-w-xl" />
+
+        <div className="mb-8 grid grid-cols-2 gap-6 md:grid-cols-4">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="border-app-border bg-app-bg flex flex-col items-center justify-center rounded-lg border p-4 text-center"
+            >
+              <Skeleton className="mb-2 h-10 w-10 rounded-full" />
+              <Skeleton className="mb-1 h-8 w-16" />
+              <Skeleton className="h-4 w-12" />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

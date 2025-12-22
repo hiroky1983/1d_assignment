@@ -9,8 +9,6 @@ const limiter = rateLimit({
   uniqueTokenPerInterval: 500,
 })
 
-export const dynamic = 'force-dynamic'
-
 export async function GET(request: NextRequest) {
   try {
     // Rate Limit Check
@@ -93,7 +91,15 @@ export async function GET(request: NextRequest) {
     const data: SearchResponse = await res.json()
 
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      (error as { digest?: string }).digest?.startsWith(
+        'NEXT_PRERENDER_INTERRUPTED',
+      )
+    ) {
+      throw error
+    }
     console.error('Search API Error:', error)
     return NextResponse.json(
       { message: 'Internal Server Error' },
