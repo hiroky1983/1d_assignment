@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
 
-export const dynamic = 'force-dynamic'
-
 import { RepoDetail } from '@/features/repo-detail/types'
 import { env } from '@/lib/env'
 
