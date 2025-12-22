@@ -192,11 +192,10 @@ lib/
 | ディレクトリ             | 責務                               | Server/Client |
 | ------------------------ | ---------------------------------- | ------------- |
 | `app/**/page.tsx`        | ルーティングのエントリーポイント   | Server        |
-| `app/**/loading.tsx`     | ルート遷移時のフォールバック       | Server        |
 | `app/**/error.tsx`       | エラーバウンダリ                   | Client        |
 | `app/api/**/route.ts`    | BFF（外部 API 呼び出し・DTO 整形） | Server        |
 | `screens/`               | 画面単位の合成・初期レンダリング   | Server        |
-| `features/*/components/` | ユースケース固有 UI                | Client        |
+| `features/*/components/` | ユースケース固有 UI                | 両対応        |
 | `features/*/hooks/`      | インタラクティブ処理               | Client        |
 | `features/*/types/`      | DTO・型定義                        | 両対応        |
 | `components/ui/`         | 汎用 UI コンポーネント             | 両対応        |

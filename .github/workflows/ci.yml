@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [22.16.0]
 
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +34,12 @@ jobs:
 
       - name: Test
         run: pnpm test:ci
+
+      - name: Typecheck
+        run: pnpm tsc
+
+      - name: e2e test
+        run: pnpm test:e2e
 
       - name: Build
         run: pnpm build

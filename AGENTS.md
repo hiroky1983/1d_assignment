@@ -46,19 +46,20 @@ pnpm fmt           # lint + prettier自動修正
 
 - **Server Component（デフォルト）**:
   - `app/**/page.tsx` - ルーティング
-  - `screens/` - 画面単位の合成
+  - `screens/` - 画面単位の構成
+  - `features/*/components/` - 静的なUI・サーバーサイドフェッチ・インタラクティブUI
   - `lib/` - サーバー専用ユーティリティ
 - **Client Component（`"use client"`必須）**:
-  - `features/*/components/` - インタラクティブUI
-  - `features/*/hooks/` - useSearch（URL 駆動の状態管理）
+  - `features/*/components/` - 状態を持つUI
+  - `features/*/hooks/` - カスタムフック（URL 駆動等）
   - `components/states/` - Error/Empty/Loading
 
 ### ディレクトリ責務
 
 ```
 app/api/          - BFF（Route Handler）
-screens/          - 画面合成（Server）
-features/         - ユースケース固有UI（Client）
+screens/          - 画面構成（Server）
+features/         - ユースケース固有UI（Server/Client）
 components/ui/    - 汎用UIコンポーネント
 components/states/ - 状態UI（Client）
 lib/              - ユーティリティ（Server）
