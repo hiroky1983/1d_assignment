@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
       fullUrl: true,
     },
   },
+
+  cacheComponents: true,
 }
 
 export default nextConfig

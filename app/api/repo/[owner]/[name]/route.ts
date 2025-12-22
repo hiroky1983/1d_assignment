@@ -3,8 +3,6 @@ import { NextResponse } from 'next/server'
 import { RepoDetail } from '@/features/repo-detail/types'
 import { env } from '@/lib/env'
 
-export const dynamic = 'force-dynamic'
-
 export async function GET(
   request: Request,
   props: { params: Promise<{ owner: string; name: string }> },

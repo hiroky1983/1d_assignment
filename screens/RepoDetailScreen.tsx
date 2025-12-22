@@ -1,11 +1,8 @@
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
-import { RepoDetailView } from '@/features/repo-detail/components/RepoDetailView'
-import { RepoDetail } from '@/features/repo-detail/types'
-
 interface RepoDetailScreenProps {
-  repo: RepoDetail
+  children: React.ReactNode
   searchParams?: {
     q?: string
     page?: number
@@ -17,7 +14,7 @@ interface RepoDetailScreenProps {
  * リポジトリ詳細情報の全体レイアウトを担当します。
  */
 export const RepoDetailScreen = ({
-  repo,
+  children,
   searchParams,
 }: RepoDetailScreenProps) => {
   const backQuery = new URLSearchParams()
@@ -38,7 +35,7 @@ export const RepoDetailScreen = ({
           </div>
           Back to Search
         </Link>
-        <RepoDetailView repo={repo} />
+        {children}
       </main>
     </div>
   )

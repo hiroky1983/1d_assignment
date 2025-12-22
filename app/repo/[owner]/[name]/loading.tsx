@@ -1,4 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 import { Header } from '@/components/layout/Header'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -12,12 +13,15 @@ export default function Loading() {
     <div className="bg-app-bg min-h-screen pb-20 font-sans">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="text-app-text-muted mb-6 inline-flex items-center">
-          <div className="border-app-border bg-app-card mr-2 rounded-full border p-2 shadow-sm">
+        <Link
+          href="/"
+          className="group text-app-text-muted hover:text-app-text-main mb-6 inline-flex items-center transition-colors"
+        >
+          <div className="border-app-border bg-app-card group-hover:border-app-text-muted mr-2 rounded-full border p-2 shadow-sm">
             <ArrowLeft className="h-5 w-5" />
           </div>
           Back to Search
-        </div>
+        </Link>
 
         <div className="border-app-border bg-app-card overflow-hidden rounded-xl border shadow-sm">
           <div className="border-app-border bg-app-bg/50 border-b p-8">

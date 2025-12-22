@@ -9,8 +9,6 @@ const limiter = rateLimit({
   uniqueTokenPerInterval: 500,
 })
 
-export const dynamic = 'force-dynamic'
-
 export async function GET(request: NextRequest) {
   try {
     // Rate Limit Check
