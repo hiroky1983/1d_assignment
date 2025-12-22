@@ -23,24 +23,19 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 /**
+ * PPR (Partial Prerendering) を有効化
+ */
+export const experimental_ppr = true
+
+/**
  * リポジトリ詳細ページ (Server Component)
  * URL パラメータに基づいてリポジトリ詳細情報を表示します。
  */
-export default async function Page(props: Props) {
-  const params = await props.params
-  const searchParams = await props.searchParams
-  const { owner, name } = params
-
-  const q = typeof searchParams.q === 'string' ? searchParams.q : undefined
-  const page =
-    typeof searchParams.page === 'string'
-      ? parseInt(searchParams.page)
-      : undefined
-
+export default function Page(props: Props) {
   return (
-    <RepoDetailScreen searchParams={{ q, page }}>
+    <RepoDetailScreen searchParamsPromise={props.searchParams}>
       <Suspense fallback={<RepoDetailSkeleton />}>
-        <RepoDetailView owner={owner} name={name} />
+        <RepoDetailView paramsPromise={props.params} />
       </Suspense>
     </RepoDetailScreen>
   )

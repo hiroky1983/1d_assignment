@@ -7,8 +7,7 @@ import { env } from '@/lib/env'
 import { RepoDetail } from '../types'
 
 interface RepoDetailViewProps {
-  owner: string
-  name: string
+  paramsPromise: Promise<{ owner: string; name: string }>
 }
 
 /**
@@ -34,9 +33,11 @@ async function getRepo(owner: string, name: string): Promise<RepoDetail> {
 
 /**
  * リポジトリ詳細表示コンポーネント (Server Component)
- * 自分自身でデータ取得を行うことで、個別の Suspense 境界をサポートします。
  */
-export const RepoDetailView = async ({ owner, name }: RepoDetailViewProps) => {
+export const RepoDetailView = async ({
+  paramsPromise,
+}: RepoDetailViewProps) => {
+  const { owner, name } = await paramsPromise
   const repo = await getRepo(owner, name)
 
   return (
