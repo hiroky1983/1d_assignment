@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 import { searchParamsSchema, SearchResponse } from '@/features/search/types'
 import { env } from '@/lib/env'
 import { rateLimit } from '@/lib/ratelimit'
@@ -91,7 +93,15 @@ export async function GET(request: NextRequest) {
     const data: SearchResponse = await res.json()
 
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      (error as { digest?: string }).digest?.startsWith(
+        'NEXT_PRERENDER_INTERRUPTED',
+      )
+    ) {
+      throw error
+    }
     console.error('Search API Error:', error)
     return NextResponse.json(
       { message: 'Internal Server Error' },
