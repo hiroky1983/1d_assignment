@@ -1,8 +1,8 @@
 import { CircleDot, ExternalLink, Eye, GitFork, Star } from 'lucide-react'
+import { headers } from 'next/headers'
 import Image from 'next/image'
 
 import { Skeleton } from '@/components/ui/Skeleton'
-import { env } from '@/lib/env'
 
 import { RepoDetail } from '../types'
 
@@ -11,16 +11,15 @@ interface RepoDetailViewProps {
 }
 
 /**
- * リポジトリ詳細データを取得する関数 (Server-side only)
+ * リポジトリ詳細データを取得する関数 (BFF経由)
  */
 async function getRepo(owner: string, name: string): Promise<RepoDetail> {
-  const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, {
-    headers: {
-      ...(env.GITHUB_TOKEN
-        ? { Authorization: `Bearer ${env.GITHUB_TOKEN}` }
-        : {}),
-      Accept: 'application/vnd.github.v3+json',
-    },
+  const headersList = await headers()
+  const host = headersList.get('host')
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+  const baseUrl = `${protocol}://${host}`
+
+  const res = await fetch(`${baseUrl}/api/repo/${owner}/${name}`, {
     next: { revalidate: 300 },
   })
 

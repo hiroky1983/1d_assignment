@@ -49,20 +49,9 @@ export const SearchInput = ({
     }
   }, [queryValue, onSearch, value])
 
-  const onSubmit = (data: FormValues) => {
-    onSearch?.(data.query)
-  }
-
-  // Prevent Enter submit during IME composition
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && isComposing) {
-      e.preventDefault()
-    }
-  }
-
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data: FormValues) => onSearch?.(data.query))}
       className="group relative w-full max-w-4xl"
     >
       <div className="from-app-primary absolute -inset-1 rounded-lg bg-linear-to-r to-violet-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
@@ -76,7 +65,11 @@ export const SearchInput = ({
           })}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' && isComposing) {
+              e.preventDefault()
+            }
+          }}
           placeholder="Search GitHub repositories..."
           aria-label="Search GitHub repositories"
           className={cn(

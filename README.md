@@ -192,11 +192,10 @@ lib/
 | ディレクトリ             | 責務                               | Server/Client |
 | ------------------------ | ---------------------------------- | ------------- |
 | `app/**/page.tsx`        | ルーティングのエントリーポイント   | Server        |
-| `app/**/loading.tsx`     | ルート遷移時のフォールバック       | Server        |
 | `app/**/error.tsx`       | エラーバウンダリ                   | Client        |
 | `app/api/**/route.ts`    | BFF（外部 API 呼び出し・DTO 整形） | Server        |
 | `screens/`               | 画面単位の合成・初期レンダリング   | Server        |
-| `features/*/components/` | ユースケース固有 UI                | Client        |
+| `features/*/components/` | ユースケース固有 UI                | 両対応        |
 | `features/*/hooks/`      | インタラクティブ処理               | Client        |
 | `features/*/types/`      | DTO・型定義                        | 両対応        |
 | `components/ui/`         | 汎用 UI コンポーネント             | 両対応        |
@@ -223,14 +222,15 @@ lib/
 
 ## 9. CSS / UI 方針
 
-- **TailwindCSS**を使用
-- shadcn/ui は使わない（設定より実装に時間を使う）
+- **TailwindCSS 4.0** を使用：
+  - `@theme inline` による CSS 変数ベースのテーマ定義
+  - 意味論（Semantic）に基づいたカラー定義（例: `app-bg`, `app-text-main`）により、保守性を向上
+- **ダークモード対応への配慮**：
+  - ハードコードされた色を排除し、`:root` で定義された CSS 変数を参照
+  - 将来的なダークモード導入時には `media (prefers-color-scheme: dark)` で変数を上書きするだけで対応可能な設計
 - レスポンシブ：
   - モバイルで横スクロールが出ない
-  - カードは `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
-  - タップ領域 44px 以上確保
 - アクセシビリティ：
-  - `focus-visible` を統一
   - キーボード操作可能
   - 適切な aria 属性
 
@@ -254,30 +254,68 @@ lib/
 - 詳細ページでは `GET /repos/{owner}/{repo}` を追加で叩く
 - BFF (`/api/repo/[owner]/[name]`) で統合
 
-### SEO 対応
+### BFF API 一覧
 
-- `generateMetadata` でリポジトリ名・説明を OGP に設定
+| エンドポイント                 | 項目           | 概要                                               |
+| ------------------------------ | -------------- | -------------------------------------------------- |
+| `GET /api/search`              | リポジトリ検索 | クエリに基づいたリポジトリ一覧の取得（要認証対応） |
+| `GET /api/repo/[owner]/[name]` | リポジトリ詳細 | 特定のリポジトリの統計情報を含む詳細データの取得   |
 
----
+### Zod スキーマ定義 (Request/Response)
 
-## 11. 環境変数設計
+API の入出力は Zod スキーマによって型安全に定義・検証されています。
+zodスキーマでAPIのリクエストとレスポンスを定義することで、アプリの設計の拡張性と型の安全性を確保できます。
+
+#### 1. リポジトリ検索 (`/api/search`)
+
+**Request (Query Parameters):**
 
 ```typescript
-// lib/env.ts
-import { z } from 'zod'
-
-const envSchema = z.object({
-  GITHUB_TOKEN: z.string().min(1),
-})
-
-export const env = envSchema.parse({
-  GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-})
+{
+  q: string // 最大100文字
+  page: number // 1以上の整数 (default: 1)
+  per_page: number // 1以上の整数 (default: 20)
+}
 ```
 
----
+**Response:**
 
-## 12. テスト方針
+```typescript
+{
+  total_count: number
+  incomplete_results: boolean
+  items: Array<{
+    id: number
+    name: string
+    owner: { login: string; avatar_url: string }
+    description: string | null
+    stargazers_count: number
+    // ...その他基本情報
+  }>
+}
+```
+
+#### 2. リポジトリ詳細 (`/api/repo/[owner]/[name]`)
+
+**Response:**
+
+```typescript
+{
+  id: number;
+  name: string;
+  owner: { login: string; avatar_url: string };
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  subscribers_count: number; // Watcher数として表示
+  forks_count: number;
+  open_issues_count: number;
+  html_url: string;
+  topics: string[];
+}
+```
+
+## 11. テスト方針
 
 - **Unit / Component**: Vitest + Testing Library
 - **API**: MSW でモック
@@ -292,7 +330,7 @@ export const env = envSchema.parse({
 
 ---
 
-## 13. CI/CD
+## 12. CI/CD
 
 - GitHub Actions
   - lint / type-check / test を PR 時に実行
@@ -300,7 +338,7 @@ export const env = envSchema.parse({
 
 ---
 
-## 14. AI 駆動開発方針
+## 13. AI 駆動開発方針
 
 - **再現性のある AI 駆動開発**
   - 誰がやっても同じ進め方になる
@@ -310,7 +348,7 @@ export const env = envSchema.parse({
 
 ---
 
-## 15. 保守性・メンテナンス性
+## 14. 保守性・メンテナンス性
 
 - 関数には **JSDoc を付与**
   - 役割 / 引数 / 戻り値 / エラー条件
@@ -318,7 +356,7 @@ export const env = envSchema.parse({
 
 ---
 
-## 16. README 構成（案）
+## 15. README 構成（案）
 
 ```markdown
 # GitHub Repository Search
