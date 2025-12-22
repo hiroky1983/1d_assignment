@@ -50,7 +50,7 @@ pnpm fmt           # lint + prettier自動修正
   - `lib/` - サーバー専用ユーティリティ
 - **Client Component（`"use client"`必須）**:
   - `features/*/components/` - インタラクティブUI
-  - `features/*/hooks/` - useSearch（debounce、IME対応、AbortController）
+  - `features/*/hooks/` - useSearch（URL 駆動の状態管理）
   - `components/states/` - Error/Empty/Loading
 
 ### ディレクトリ責務
@@ -70,16 +70,15 @@ lib/              - ユーティリティ（Server）
 2. **`app/` 配下に不要な `"use client"` を追加** → Server Component を維持
 3. **グローバル状態を作る** → URL パラメータ（`?q=&page=`）で管理
 4. **入力検証をスキップ** → Zod schema で必ず検証（max 100文字）
-5. **IME 変換中に検索を発火** → `isComposing` チェック必須
-6. **`else if` を使う** → Early Return、Switch、オブジェクトマッピングで対応
-7. **検索ページで `loading.tsx` を使う** → 同一ページ内更新なので不要（詳細ページでのみ使用）
+5. **`else if` を使う** → Early Return、Switch、オブジェクトマッピングで対応
+6. **検索ページで `loading.tsx` を使う** → 同一ページ内更新なので不要（詳細ページでのみ使用）
 
 ## テスト戦略
 
 ### 優先度
 
 1. BFF Route Handler（正常系・異常系・レート制限）
-2. 検索フォームのインタラクション（debounce、IME、validation）
+2. 検索フォームのインタラクション（validation）
 3. E2E フロー（検索 → ページネーション → 詳細）
 
 ### ツール

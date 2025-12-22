@@ -73,7 +73,7 @@ export function useSearch() {
     triggerSearch: handleImmediateSearch,
     data,
     error,
-    isLoading: isLoading,
+    isLoading,
     page,
     setPage: handlePageChange,
   }
