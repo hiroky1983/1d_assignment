@@ -223,13 +223,9 @@ lib/
 ## 9. CSS / UI 方針
 
 - **TailwindCSS**を使用
-- shadcn/ui は使わない（設定より実装に時間を使う）
 - レスポンシブ：
   - モバイルで横スクロールが出ない
-  - カードは `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
-  - タップ領域 44px 以上確保
 - アクセシビリティ：
-  - `focus-visible` を統一
   - キーボード操作可能
   - 適切な aria 属性
 
