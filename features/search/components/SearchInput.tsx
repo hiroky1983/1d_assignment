@@ -63,7 +63,7 @@ export const SearchInput = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="group relative w-full max-w-2xl"
+      className="group relative w-full max-w-4xl"
     >
       <div className="from-app-primary absolute -inset-1 rounded-lg bg-linear-to-r to-violet-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
       <div className="relative">
