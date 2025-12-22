@@ -1,75 +1,84 @@
 import { Search } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 
 import { cn } from '@/lib/utils'
 
 interface SearchInputProps {
-  value: string
+  initialValue?: string
   onSearch?: (value: string) => void
   isLoading?: boolean
 }
 
-interface FormValues {
-  query: string
-}
-
 /**
- * 検索入力フォームコンポーネント (React Hook Form)
- * フォーム送信、無駄な再レンダリング抑制、IME制御を行います。
+ * 検索入力フォームコンポーネント (Uncontrolled Input)
+ * useEffectを使わず、defaultValueとFormDataでシンプルに実装
+ * IME制御を行い、Enter送信を適切に処理します。
  */
 export const SearchInput = ({
-  value,
+  initialValue = '',
   onSearch,
   isLoading,
 }: SearchInputProps) => {
   const [isComposing, setIsComposing] = useState(false)
+  const [error, setError] = useState('')
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors, isValid },
-  } = useForm<FormValues>({
-    defaultValues: { query: value },
-    mode: 'onChange',
-  })
+  /**
+   * フォーム送信ハンドラ
+   * FormDataからクエリを取得し、バリデーション後に検索を実行
+   */
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const query = (formData.get('query') as string).trim()
 
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const queryValue = watch('query')
-
-  useEffect(() => {
-    setValue('query', value)
-  }, [value, setValue])
-
-  useEffect(() => {
-    if (queryValue === '' && value !== '') {
-      onSearch?.('')
+    if (query.length > 100) {
+      setError('Max 100 characters allowed')
+      return
     }
-  }, [queryValue, onSearch, value])
+
+    setError('')
+    if (!isComposing && query) {
+      onSearch?.(query)
+    }
+  }
+
+  /**
+   * 入力時バリデーション
+   * リアルタイムで100文字制限をチェック
+   */
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value
+    if (value.length > 100) {
+      setError('Max 100 characters allowed')
+    } else {
+      setError('')
+    }
+  }
+
+  /**
+   * Enterキーハンドラ
+   * IME変換中のEnter送信を防止
+   */
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && isComposing) {
+      e.preventDefault()
+    }
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit((data: FormValues) => onSearch?.(data.query))}
-      className="group relative w-full max-w-4xl"
-    >
+    <form onSubmit={handleSubmit} className="group relative w-full max-w-4xl">
       <div className="from-app-primary absolute -inset-1 rounded-lg bg-linear-to-r to-violet-600 opacity-25 blur transition duration-1000 group-hover:opacity-50 group-hover:duration-200"></div>
       <div className="relative">
         <Search className="text-app-text-muted pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 transform" />
         <input
           type="search"
-          {...register('query', {
-            validate: (value) =>
-              value.length <= 100 || 'Max 100 characters allowed',
-          })}
+          name="query"
+          defaultValue={initialValue}
+          onInput={handleInput}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
-          onKeyDown={(e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' && isComposing) {
-              e.preventDefault()
-            }
-          }}
+          onKeyDown={handleKeyDown}
+          maxLength={101}
           placeholder="Search GitHub repositories..."
           aria-label="Search GitHub repositories"
           className={cn(
@@ -77,12 +86,12 @@ export const SearchInput = ({
             'focus:ring-app-primary transition-all duration-300 outline-none focus:border-transparent focus:ring-2',
             'placeholder-app-text-muted disabled:opacity-50',
           )}
-          disabled={isLoading && !queryValue}
+          disabled={isLoading}
         />
         <button
           type="submit"
           className="bg-app-primary text-app-primary-foreground absolute top-1/2 right-2 -translate-y-1/2 transform rounded-md px-4 py-2 transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isLoading || !queryValue || !isValid}
+          disabled={isLoading || !!error}
         >
           Search
         </button>
@@ -92,9 +101,7 @@ export const SearchInput = ({
           </div>
         )}
       </div>
-      {errors.query && (
-        <p className="text-app-error mt-2 text-sm">{errors.query.message}</p>
-      )}
+      {error && <p className="text-app-error mt-2 text-sm">{error}</p>}
     </form>
   )
 }

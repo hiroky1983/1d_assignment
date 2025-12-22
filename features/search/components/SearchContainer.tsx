@@ -19,7 +19,8 @@ export const SearchContainer = () => {
   return (
     <div className="flex w-full flex-col items-center">
       <SearchInput
-        value={query}
+        key={query}
+        initialValue={query}
         onSearch={triggerSearch}
         isLoading={isLoading}
       />
