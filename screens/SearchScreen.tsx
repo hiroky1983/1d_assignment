@@ -20,7 +20,6 @@ const SearchScreenContent = () => {
 
   return (
     <div className="bg-app-bg text-app-text-main min-h-screen pb-20 font-sans">
-      {/* Header moved to layout */}
       <main className="container mx-auto flex flex-col items-center px-4 py-8">
         <div className="mb-8 text-center">
           <h1 className="from-app-text-main to-app-text-muted mb-4 bg-linear-to-r bg-clip-text text-4xl font-extrabold tracking-tight text-transparent">
@@ -78,7 +77,6 @@ export const SearchScreen = () => {
     <Suspense
       fallback={
         <div className="bg-app-bg min-h-screen">
-          {/* Header is now in layout */}
           <LoadingState />
         </div>
       }
