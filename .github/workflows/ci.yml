@@ -38,6 +38,9 @@ jobs:
       - name: Typecheck
         run: pnpm tsc
 
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+
       - name: e2e test
         run: pnpm test:e2e
 
