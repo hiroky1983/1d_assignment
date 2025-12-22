@@ -23,11 +23,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 /**
- * PPR (Partial Prerendering) を有効化
- */
-export const experimental_ppr = true
-
-/**
  * リポジトリ詳細ページ (Server Component)
  * URL パラメータに基づいてリポジトリ詳細情報を表示します。
  */
