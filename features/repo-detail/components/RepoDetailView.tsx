@@ -80,24 +80,6 @@ export const RepoDetailView = ({ repo }: RepoDetailViewProps) => {
             value={repo.open_issues_count}
           />
         </div>
-
-        {repo.topics && repo.topics.length > 0 && (
-          <div className="mt-8">
-            <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase">
-              Topics
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {repo.topics.map((topic) => (
-                <span
-                  key={topic}
-                  className="bg-app-bg text-app-text-muted hover:bg-app-border rounded-full px-3 py-1 text-sm font-medium transition-colors"
-                >
-                  {topic}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )

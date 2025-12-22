@@ -27,7 +27,7 @@ export const RepoDetailScreen = ({
   const backHref = backQuery.toString() ? `/?${backQuery.toString()}` : '/'
 
   return (
-    <div className="bg-app-bg min-h-screen pb-20 font-sans">
+    <div className="bg-app-bg pb-20 font-sans">
       <main className="container mx-auto px-4 py-8">
         <Link
           href={backHref}
