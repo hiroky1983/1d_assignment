@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { RepoDetail } from '@/features/repo-detail/types'
-import { env } from '@/lib/env'
+import { getRepoDetail } from '@/features/repo-detail/api/repo'
 
 export async function GET(
   request: Request,
@@ -11,31 +10,7 @@ export async function GET(
   const { owner, name } = params
 
   try {
-    const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, {
-      headers: {
-        ...(env.GITHUB_TOKEN
-          ? { Authorization: `Bearer ${env.GITHUB_TOKEN}` }
-          : {}),
-        Accept: 'application/vnd.github.v3+json',
-      },
-      next: { revalidate: 300 },
-    })
-
-    if (!res.ok) {
-      if (res.status === 404) {
-        return NextResponse.json(
-          { message: 'Repository not found' },
-          { status: 404 },
-        )
-      }
-      const errorData = await res.json()
-      return NextResponse.json(
-        { message: errorData.message || 'GitHub API Error' },
-        { status: res.status },
-      )
-    }
-
-    const data: RepoDetail = await res.json()
+    const data = await getRepoDetail(owner, name)
     return NextResponse.json(data)
   } catch (error) {
     if (
@@ -46,9 +21,20 @@ export async function GET(
     ) {
       throw error
     }
+
+    if (error instanceof Error && error.message === 'NOT_FOUND') {
+      return NextResponse.json(
+        { message: 'Repository not found' },
+        { status: 404 },
+      )
+    }
+
     console.error('Repo Detail API Error:', error)
     return NextResponse.json(
-      { message: 'Internal Server Error' },
+      {
+        message:
+          error instanceof Error ? error.message : 'Internal Server Error',
+      },
       { status: 500 },
     )
   }
