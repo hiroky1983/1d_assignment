@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import useSWR from 'swr'
 
@@ -20,7 +20,6 @@ import { SearchResponse } from '../types'
  * @returns {Function} setPage - ページを変更する関数
  */
 export const useSearch = () => {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const page = useMemo(
     () => Number(searchParams.get('page')) || 1,
@@ -55,21 +54,25 @@ export const useSearch = () => {
    */
   const handleImmediateSearch = useCallback(
     (query: string) => {
+      const params = new URLSearchParams(searchParams.toString())
       if (query) {
-        const params = new URLSearchParams(searchParams.toString())
         params.set('q', query)
         params.set('page', '1') // 新しい検索なら1ページ目に戻す
-
-        router.push(`/?${params.toString()}`)
       } else {
-        router.push('/')
+        params.delete('q')
+        params.delete('page')
       }
+
+      const queryString = params.toString()
+      const newUrl = queryString ? `/?${queryString}` : '/'
+      window.history.pushState(null, '', newUrl)
     },
-    [router, searchParams],
+    [searchParams],
   )
 
   /**
    * 指定されたページへ遷移します
+   * router.pushの代わりにpushStateを使用することで、高速にURLのみを更新します。
    * @param newPage 遷移先のページ番号
    */
   const setPage = useCallback(
@@ -77,9 +80,11 @@ export const useSearch = () => {
       const params = new URLSearchParams(searchParams.toString())
       params.set('page', newPage.toString())
       params.set('per_page', '20')
-      router.push(`/?${params.toString()}`)
+
+      const newUrl = `/?${params.toString()}`
+      window.history.pushState(null, '', newUrl)
     },
-    [router, searchParams],
+    [searchParams],
   )
 
   return {
