@@ -17,7 +17,8 @@ export const useSearch = () => {
 
   // 汎用的にURLパラメータを構築
   const buildSearchUrl = (params: URLSearchParams) => {
-    if (!query) return null
+    const q = params.get('q')
+    if (!q) return null
     return `/api/search?${params.toString()}`
   }
 
