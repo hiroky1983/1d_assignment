@@ -15,7 +15,9 @@ test.describe('Security & Bot Protection', () => {
     await expect(page.getByText('Max 100 characters allowed')).toBeVisible()
 
     // Button should be disabled
-    await expect(page.getByRole('button', { name: 'Search' })).toBeDisabled()
+    await expect(
+      page.getByRole('button', { name: 'Search', exact: true }),
+    ).toBeDisabled()
 
     // Try to press Enter (should not submit)
     await searchInput.press('Enter')

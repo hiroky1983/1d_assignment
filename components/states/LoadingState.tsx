@@ -1,4 +1,4 @@
-import { RepoListSkeleton } from '@/features/search/components/RepoList'
+import { RepoListSkeleton } from '../../features/search/components/RepoListSkeleton'
 
 /**
  * ロード中状態表示コンポーネント (UI)

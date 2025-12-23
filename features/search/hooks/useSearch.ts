@@ -1,80 +1,108 @@
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useCallback, useMemo } from 'react'
 import useSWR from 'swr'
 
 import { fetcher } from '@/lib/fetcher'
 
 import { SearchResponse } from '../types'
 
-export function useSearch() {
-  const router = useRouter()
+/**
+ * 検索ロジックを管理するカスタムフック
+ * URLパラメータ（q, page）と同期した検索状態、データ取得、ページネーション操作を提供します。
+ *
+ * @returns {Object} 検索状態と操作関数
+ * @returns {string} query - 現在の検索文字列
+ * @returns {Function} triggerSearch - 新しい検索を実行する関数
+ * @returns {SearchResponse | undefined} data - 検索結果データ
+ * @returns {Error | null} error - エラー状態
+ * @returns {boolean} isLoading - 読み込み中かどうか（keepPreviousDataにより、ページ変更時はtrueになりません）
+ * @returns {number} page - 現在のページ番号
+ * @returns {Function} setPage - ページを変更する関数
+ */
+export const useSearch = () => {
   const searchParams = useSearchParams()
+  const page = useMemo(
+    () => Number(searchParams.get('page')) || 1,
+    [searchParams],
+  )
+  const query = useMemo(() => searchParams.get('q') || '', [searchParams])
 
-  const initialQuery = searchParams.get('q') || ''
-
-  const [query, setQuery] = useState(initialQuery)
-
-  // Sync URL -> State (e.g. navigation buttons)
-  useEffect(() => {
-    const urlQ = searchParams.get('q') || ''
-    if (urlQ !== query) {
-      setQuery(urlQ)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams])
-
-  const page = Number(searchParams.get('page')) || 1
-
-  // 汎用的にURLパラメータを構築
+  /**
+   * 検索APIのURLを構築します
+   * @param params 現在のURLパラメータ
+   * @returns 構築されたAPIのURL、またはクエリがない場合はnull
+   */
   const buildSearchUrl = (params: URLSearchParams) => {
     const q = params.get('q')
     if (!q) return null
     return `/api/search?${params.toString()}`
   }
 
-  const url = buildSearchUrl(searchParams)
-
-  const { data, error, isLoading } = useSWR<SearchResponse>(url, fetcher, {
-    keepPreviousData: !!url, // Only keep previous data if we are fetching a new valid URL
-    revalidateOnFocus: false,
-  })
-
-  // 汎用的な検索実行関数
-  const handleImmediateSearch = useCallback(
-    (term: string) => {
-      setQuery(term)
-
-      if (term) {
-        const params = new URLSearchParams(searchParams.toString())
-        params.set('q', term)
-        params.set('page', '1') // 新しい検索なら1ページ目に戻す
-
-        router.push(`/?${params.toString()}`)
-      } else {
-        router.push('/')
-      }
+  const { data, error, isLoading, mutate } = useSWR<SearchResponse>(
+    buildSearchUrl(searchParams),
+    fetcher,
+    {
+      revalidateOnFocus: false,
     },
-    [router, searchParams],
   )
 
-  const handlePageChange = useCallback(
+  /**
+   * 検索状態を完全にリセットします
+   * URLを初期化し、SWRのキャッシュをクリアします。
+   */
+  const clearSearch = useCallback(() => {
+    window.history.pushState(null, '', '/')
+    mutate(undefined, { revalidate: false })
+  }, [mutate])
+
+  /**
+   * ユーザー入力に基づき即座に検索を実行します
+   * URLの情報を更新することで、useSWRのフェッチをトリガーします。
+   * @param query 検索文字列
+   */
+  const handleImmediateSearch = useCallback(
+    (query: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      if (query) {
+        params.set('q', query)
+        params.set('page', '1') // 新しい検索なら1ページ目に戻す
+      } else {
+        params.delete('q')
+        params.delete('page')
+      }
+
+      const queryString = params.toString()
+      const newUrl = queryString ? `/?${queryString}` : '/'
+      window.history.pushState(null, '', newUrl)
+    },
+    [searchParams],
+  )
+
+  /**
+   * 指定されたページへ遷移します
+   * router.pushの代わりにpushStateを使用することで、高速にURLのみを更新します。
+   * @param newPage 遷移先のページ番号
+   */
+  const setPage = useCallback(
     (newPage: number) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set('page', newPage.toString())
       params.set('per_page', '20')
-      router.push(`/?${params.toString()}`)
+
+      const newUrl = `/?${params.toString()}`
+      window.history.pushState(null, '', newUrl)
     },
-    [router, searchParams],
+    [searchParams],
   )
 
   return {
     query,
-    setQuery: (term: string) => setQuery(term),
     triggerSearch: handleImmediateSearch,
+    clearSearch,
     data,
     error,
     isLoading,
     page,
-    setPage: handlePageChange,
+    setPage,
   }
 }

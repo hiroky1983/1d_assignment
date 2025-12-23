@@ -3,10 +3,10 @@ export interface FetchError extends Error {
   status?: number
 }
 
-export async function fetcher<T>(
+export const fetcher = async <T>(
   url: string,
   options?: RequestInit,
-): Promise<T> {
+): Promise<T> => {
   const res = await fetch(url, options)
 
   if (!res.ok) {

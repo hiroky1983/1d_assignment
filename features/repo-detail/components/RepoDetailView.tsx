@@ -13,7 +13,7 @@ interface RepoDetailViewProps {
 /**
  * リポジトリ詳細データを取得する関数 (BFF経由)
  */
-async function getRepo(owner: string, name: string): Promise<RepoDetail> {
+const getRepo = async (owner: string, name: string): Promise<RepoDetail> => {
   const headersList = await headers()
   const host = headersList.get('host')
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'

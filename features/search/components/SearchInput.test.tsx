@@ -5,7 +5,7 @@ import { SearchInput } from './SearchInput'
 
 test('SearchInput triggers search on Button click', async () => {
   const handleSearch = vi.fn()
-  render(<SearchInput value="" onSearch={handleSearch} />)
+  render(<SearchInput onSearch={handleSearch} />)
 
   const input = screen.getByPlaceholderText('Search GitHub repositories...')
   const button = screen.getByText('Search')
@@ -29,7 +29,7 @@ test('SearchInput triggers search on Button click', async () => {
 
 test('SearchInput triggers search on Enter', async () => {
   const handleSearch = vi.fn()
-  render(<SearchInput value="" onSearch={handleSearch} />)
+  render(<SearchInput onSearch={handleSearch} />)
 
   const input = screen.getByPlaceholderText('Search GitHub repositories...')
 
@@ -45,7 +45,7 @@ test('SearchInput triggers search on Enter', async () => {
 
 test('SearchInput prevents submit during IME composition', async () => {
   const handleSearch = vi.fn()
-  render(<SearchInput value="" onSearch={handleSearch} />)
+  render(<SearchInput onSearch={handleSearch} />)
 
   const input = screen.getByPlaceholderText('Search GitHub repositories...')
 
