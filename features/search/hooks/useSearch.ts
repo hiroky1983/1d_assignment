@@ -1,5 +1,5 @@
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 
 import { fetcher } from '@/lib/fetcher'
@@ -27,6 +27,8 @@ export const useSearch = () => {
   )
   const query = useMemo(() => searchParams.get('q') || '', [searchParams])
 
+  const [previousQuery, setPreviousQuery] = useState('')
+
   /**
    * 検索APIのURLを構築します
    * @param params 現在のURLパラメータ
@@ -42,9 +44,14 @@ export const useSearch = () => {
     buildSearchUrl(searchParams),
     fetcher,
     {
+      keepPreviousData: !!query && query === previousQuery,
       revalidateOnFocus: false,
     },
   )
+
+  useEffect(() => {
+    if (query && !isLoading) setPreviousQuery(query)
+  }, [query, isLoading])
 
   /**
    * 検索状態を完全にリセットします
