@@ -6,6 +6,19 @@ import { fetcher } from '@/lib/fetcher'
 
 import { SearchResponse } from '../types'
 
+/**
+ * 検索ロジックを管理するカスタムフック
+ * URLパラメータ（q, page）と同期した検索状態、データ取得、ページネーション操作を提供します。
+ *
+ * @returns {Object} 検索状態と操作関数
+ * @returns {string} query - 現在の検索文字列
+ * @returns {Function} triggerSearch - 新しい検索を実行する関数
+ * @returns {SearchResponse | undefined} data - 検索結果データ
+ * @returns {Error | null} error - エラー状態
+ * @returns {boolean} isLoading - 読み込み中かどうか（keepPreviousDataにより、ページ変更時はtrueになりません）
+ * @returns {number} page - 現在のページ番号
+ * @returns {Function} setPage - ページを変更する関数
+ */
 export const useSearch = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -15,7 +28,11 @@ export const useSearch = () => {
   )
   const query = useMemo(() => searchParams.get('q') || '', [searchParams])
 
-  // 汎用的にURLパラメータを構築
+  /**
+   * 検索APIのURLを構築します
+   * @param params 現在のURLパラメータ
+   * @returns 構築されたAPIのURL、またはクエリがない場合はnull
+   */
   const buildSearchUrl = (params: URLSearchParams) => {
     const q = params.get('q')
     if (!q) return null
@@ -26,12 +43,16 @@ export const useSearch = () => {
     buildSearchUrl(searchParams),
     fetcher,
     {
-      keepPreviousData: !!searchParams, // Only keep previous data if we are fetching a new valid URL
+      keepPreviousData: !!searchParams,
       revalidateOnFocus: false,
     },
   )
 
-  // 汎用的な検索実行関数
+  /**
+   * ユーザー入力に基づき即座に検索を実行します
+   * URLの情報を更新することで、useSWRのフェッチをトリガーします。
+   * @param query 検索文字列
+   */
   const handleImmediateSearch = useCallback(
     (query: string) => {
       if (query) {
@@ -47,6 +68,10 @@ export const useSearch = () => {
     [router, searchParams],
   )
 
+  /**
+   * 指定されたページへ遷移します
+   * @param newPage 遷移先のページ番号
+   */
   const setPage = useCallback(
     (newPage: number) => {
       const params = new URLSearchParams(searchParams.toString())

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 
 interface SearchInputProps {
-  value: string
   onSearch?: (value: string) => void
   isLoading?: boolean
 }
@@ -20,11 +19,7 @@ const VALIDATION_ERROR_MESSAGE = 'Max 100 characters allowed'
  * 検索入力フォームコンポーネント (React Hook Form)
  * フォーム送信、無駄な再レンダリング抑制、IME制御を行います。
  */
-export const SearchInput = ({
-  value,
-  onSearch,
-  isLoading,
-}: SearchInputProps) => {
+export const SearchInput = ({ onSearch, isLoading }: SearchInputProps) => {
   const [isComposing, setIsComposing] = useState(false)
 
   const {
@@ -64,7 +59,6 @@ export const SearchInput = ({
             'focus:ring-app-primary transition-all duration-300 outline-none focus:border-transparent focus:ring-2',
             'placeholder-app-text-muted disabled:opacity-50',
           )}
-          defaultValue={value}
           disabled={isLoading}
         />
         <button
