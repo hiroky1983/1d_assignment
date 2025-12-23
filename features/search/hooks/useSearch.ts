@@ -38,14 +38,22 @@ export const useSearch = () => {
     return `/api/search?${params.toString()}`
   }
 
-  const { data, error, isLoading } = useSWR<SearchResponse>(
+  const { data, error, isLoading, mutate } = useSWR<SearchResponse>(
     buildSearchUrl(searchParams),
     fetcher,
     {
-      keepPreviousData: !!searchParams,
       revalidateOnFocus: false,
     },
   )
+
+  /**
+   * 検索状態を完全にリセットします
+   * URLを初期化し、SWRのキャッシュをクリアします。
+   */
+  const clearSearch = useCallback(() => {
+    window.history.pushState(null, '', '/')
+    mutate(undefined, { revalidate: false })
+  }, [mutate])
 
   /**
    * ユーザー入力に基づき即座に検索を実行します
@@ -90,6 +98,7 @@ export const useSearch = () => {
   return {
     query,
     triggerSearch: handleImmediateSearch,
+    clearSearch,
     data,
     error,
     isLoading,

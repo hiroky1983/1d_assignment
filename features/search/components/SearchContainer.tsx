@@ -70,12 +70,25 @@ const SearchResultContent = ({
  * 検索ロジックと結果表示を担当します。
  */
 export const SearchContainer = () => {
-  const { query, triggerSearch, data, error, isLoading, page, setPage } =
-    useSearch()
+  const {
+    query,
+    triggerSearch,
+    clearSearch,
+    data,
+    error,
+    isLoading,
+    page,
+    setPage,
+  } = useSearch()
 
   return (
     <div className="flex w-full flex-col items-center">
-      <SearchInput onSearch={triggerSearch} isLoading={isLoading} />
+      <SearchInput
+        onSearch={triggerSearch}
+        onClear={clearSearch}
+        isLoading={isLoading}
+        defaultValue={query}
+      />
 
       <div className="mt-8 w-full">
         <SearchResultContent
