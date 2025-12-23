@@ -1,5 +1,5 @@
 import { Search, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
@@ -40,7 +40,12 @@ export const SearchInput = ({
     mode: 'onChange',
   })
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const queryValue = watch('query')
+
+  useEffect(() => {
+    setValue('query', defaultValue)
+  }, [defaultValue, setValue])
 
   return (
     <form
