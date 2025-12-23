@@ -1,5 +1,5 @@
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import useSWR from 'swr'
 
 import { fetcher } from '@/lib/fetcher'
@@ -26,6 +26,7 @@ export const useSearch = () => {
     [searchParams],
   )
   const query = useMemo(() => searchParams.get('q') || '', [searchParams])
+  const [previousQuery, setPreviousQuery] = useState('')
 
   /**
    * 検索APIのURLを構築します
@@ -42,9 +43,16 @@ export const useSearch = () => {
     buildSearchUrl(searchParams),
     fetcher,
     {
+      keepPreviousData: !!query && query === previousQuery,
       revalidateOnFocus: false,
     },
   )
+
+  // 検索が完了した時点で、現在のクエリを「前回のクエリ」として保存します。
+  // useEffectを使わずレンダー中に更新することで、警告を回避しつつ即座に反映させます。
+  if (query && !isLoading && query !== previousQuery) {
+    setPreviousQuery(query)
+  }
 
   /**
    * 検索状態を完全にリセットします
