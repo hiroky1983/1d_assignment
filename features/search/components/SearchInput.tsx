@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
@@ -13,6 +13,8 @@ interface SearchInputProps {
 interface FormValues {
   query: string
 }
+
+const VALIDATION_ERROR_MESSAGE = 'Max 100 characters allowed'
 
 /**
  * 検索入力フォームコンポーネント (React Hook Form)
@@ -28,26 +30,11 @@ export const SearchInput = ({
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors, isValid },
   } = useForm<FormValues>({
-    defaultValues: { query: value },
+    defaultValues: { query: '' },
     mode: 'onChange',
   })
-
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const queryValue = watch('query')
-
-  useEffect(() => {
-    setValue('query', value)
-  }, [value, setValue])
-
-  useEffect(() => {
-    if (queryValue === '' && value !== '') {
-      onSearch?.('')
-    }
-  }, [queryValue, onSearch, value])
 
   return (
     <form
@@ -61,7 +48,7 @@ export const SearchInput = ({
           type="search"
           {...register('query', {
             validate: (value) =>
-              value.length <= 100 || 'Max 100 characters allowed',
+              value.length <= 100 || VALIDATION_ERROR_MESSAGE,
           })}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
@@ -77,12 +64,13 @@ export const SearchInput = ({
             'focus:ring-app-primary transition-all duration-300 outline-none focus:border-transparent focus:ring-2',
             'placeholder-app-text-muted disabled:opacity-50',
           )}
-          disabled={isLoading && !queryValue}
+          defaultValue={value}
+          disabled={isLoading}
         />
         <button
           type="submit"
           className="bg-app-primary text-app-primary-foreground absolute top-1/2 right-2 -translate-y-1/2 transform rounded-md px-4 py-2 transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isLoading || !queryValue || !isValid}
+          disabled={isLoading || !isValid}
         >
           Search
         </button>

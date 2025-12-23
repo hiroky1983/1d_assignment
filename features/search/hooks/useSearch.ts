@@ -1,52 +1,41 @@
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import useSWR from 'swr'
 
 import { fetcher } from '@/lib/fetcher'
 
 import { SearchResponse } from '../types'
 
-export function useSearch() {
+export const useSearch = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-
-  const initialQuery = searchParams.get('q') || ''
-
-  const [query, setQuery] = useState(initialQuery)
-
-  // Sync URL -> State (e.g. navigation buttons)
-  useEffect(() => {
-    const urlQ = searchParams.get('q') || ''
-    if (urlQ !== query) {
-      setQuery(urlQ)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams])
-
-  const page = Number(searchParams.get('page')) || 1
+  const page = useMemo(
+    () => Number(searchParams.get('page')) || 1,
+    [searchParams],
+  )
+  const query = useMemo(() => searchParams.get('q') || '', [searchParams])
 
   // 汎用的にURLパラメータを構築
   const buildSearchUrl = (params: URLSearchParams) => {
-    const q = params.get('q')
-    if (!q) return null
+    if (!query) return null
     return `/api/search?${params.toString()}`
   }
 
-  const url = buildSearchUrl(searchParams)
-
-  const { data, error, isLoading } = useSWR<SearchResponse>(url, fetcher, {
-    keepPreviousData: !!url, // Only keep previous data if we are fetching a new valid URL
-    revalidateOnFocus: false,
-  })
+  const { data, error, isLoading } = useSWR<SearchResponse>(
+    buildSearchUrl(searchParams),
+    fetcher,
+    {
+      keepPreviousData: !!searchParams, // Only keep previous data if we are fetching a new valid URL
+      revalidateOnFocus: false,
+    },
+  )
 
   // 汎用的な検索実行関数
   const handleImmediateSearch = useCallback(
-    (term: string) => {
-      setQuery(term)
-
-      if (term) {
+    (query: string) => {
+      if (query) {
         const params = new URLSearchParams(searchParams.toString())
-        params.set('q', term)
+        params.set('q', query)
         params.set('page', '1') // 新しい検索なら1ページ目に戻す
 
         router.push(`/?${params.toString()}`)
@@ -57,7 +46,7 @@ export function useSearch() {
     [router, searchParams],
   )
 
-  const handlePageChange = useCallback(
+  const setPage = useCallback(
     (newPage: number) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set('page', newPage.toString())
@@ -69,12 +58,11 @@ export function useSearch() {
 
   return {
     query,
-    setQuery: (term: string) => setQuery(term),
     triggerSearch: handleImmediateSearch,
     data,
     error,
     isLoading,
     page,
-    setPage: handlePageChange,
+    setPage,
   }
 }
