@@ -46,9 +46,6 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: e2e test local
-        run: pnpm test:e2e
-
       - name: Wait for Vercel Deployment
         uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
         id: waitForVercel
