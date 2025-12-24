@@ -50,7 +50,7 @@ jobs:
         run: pnpm test:e2e
 
       - name: Wait for Vercel Deployment
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
         id: waitForVercel
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
