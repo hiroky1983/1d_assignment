@@ -41,8 +41,20 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: e2e test
+      - name: e2e test local
         run: pnpm test:e2e
+
+      - name: Wait for Vercel Deployment
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        id: waitForVercel
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run E2E against Vercel Preview
+        run: pnpm test:e2e
+        env:
+          # PlaywrightのbaseURLをVercelのURLに上書き
+          PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForVercel.outputs.url }}
 
       - name: Build
         run: pnpm build
