@@ -68,11 +68,9 @@ lib/              - ユーティリティ（Server）
 ## よくある落とし穴（必ず避けること）
 
 1. **GitHub API を直接クライアントから叩く** → 必ず BFF 経由
-2. **`app/` 配下に不要な `"use client"` を追加** → Server Component を維持
-3. **グローバル状態を作る** → URL パラメータ（`?q=&page=`）で管理
-4. **入力検証をスキップ** → Zod schema で必ず検証（max 100文字）
-5. **`else if` を使う** → Early Return、Switch、オブジェクトマッピングで対応
-6. **検索ページで `loading.tsx` を使う** → 同一ページ内更新なので不要（詳細ページでのみ使用）
+2. **グローバル状態を作る** → URL パラメータ（`?q=&page=`）で管理
+3. **入力検証をスキップ** → Zod schema で必ず検証（max 100文字）
+4. **`else if` を使う** → Early Return、Switch、オブジェクトマッピングで対応
 
 ## テスト戦略
 
@@ -90,7 +88,17 @@ lib/              - ユーティリティ（Server）
 
 ## コーディング規約 (Coding Standards)
 
+### Must
+
 - **JSDoc**: 関数やコンポーネントには必ず JSDoc を付与する (役割、引数、戻り値など)
 - **関数定義**: `page.tsx`, `layout.tsx` 等の Next.js の仕様で必要な場合を除き、`function` キーワードは使わず `const` で定義する (アロー関数)
 - **エクスポート**: `page.tsx`, `layout.tsx` 等の Next.js の仕様で必要な場合を除き、`export default` は使わず Named Export を使用する
-- **制御構文**: `else if` は禁止。ネストが深くなるため、Early Return、Switch 文、またはオブジェクトマッピングで対応する
+- **制御構文**: `else if` は禁止。ネストが深くなるため、Early Return、Switch 文、またはオブジェクトマッピングで対応する（三項演算子も同様）
+
+### Should
+
+- **副作用を最小限に抑える**: `useEffect` の使用は可能な限り避けた設計と実装を心がける
+- **`app/` 配下に不要な `"use client"` を追加**: Server Component を可能な限り維持する
+- **型定義を最小限に抑える**: `any` を使用するのを極力避ける（やむを得ない場合は許可）
+- **コード品質を維持する**: コード実装編集後に `pnpm fmt` を実行する
+- **useMemoとuseCallbackを使用する**: パフォーマンスを考慮して、不要な再レンダリングを防ぐ意味で適切に使用することを意識する
