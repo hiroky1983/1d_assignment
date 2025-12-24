@@ -5,5 +5,9 @@ import { RepoListSkeleton } from '../../features/search/components/RepoListSkele
  * データ取得中に表示するスケルトンローディングをラップします。
  */
 export const LoadingState = () => {
-  return <RepoListSkeleton />
+  return (
+    <div data-testid="loading-state">
+      <RepoListSkeleton />
+    </div>
+  )
 }
