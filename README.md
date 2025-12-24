@@ -142,6 +142,7 @@
 
    ```
    GITHUB_TOKEN=your_github_token_here
+   PLAYWRIGHT_TEST_BASE_URL=http://localhost:3000 # E2Eテスト用 (任意)
    ```
 
    ※ Token がなくても動作しますが、API レート制限（60 回/時）がかかりやすくなります。
@@ -414,8 +415,25 @@ zodスキーマでAPIのリクエストとレスポンスを定義すること�
 
 ---
 
-## 11. CI/CD
+## 11. CI/CD 戦略
 
-- GitHub Actions
-  - lint / type-check / test を PR 時に実行
-  - main マージで Vercel 自動デプロイ
+品質を担保し、デプロイ後の「動かない」を防ぐために GitHub Actions を用いた多層的な検証パイプラインを構築しています。
+
+### パイプラインの全行程
+
+1.  **静的解析 & ユニットテスト**
+    - `pnpm lint`: コード規約のチェック
+    - `pnpm tsc`: TypeScript の型整合性チェック
+    - `pnpm test:ci`: Vitest によるロジック・コンポーネントの高速なテスト
+2.  **ローカル E2E テスト (`Local E2E`)**
+    - `playwright`: 仮想的な開発サーバーを GitHub Actions 上で立ち上げ、ブラウザ操作レベルでの検証を行います。
+3.  **Vercel Preview 環境 E2E テスト (`Preview E2E`)**
+    - Vercel の Preview Deployment が完了するのを待機し、**実際にデプロイされた URL に対して** Playwright を実行します。
+    - これにより、本番に近い環境（エッジ、環境変数の注入状態、ネットワーク遅延）での動作をマージ前に保証します。
+4.  **プロダクションビルドチェック**
+    - `pnpm build`: 本番ビルドが正常に完了することを確認し、サーバーサイドコードのエラーを未然に防ぎます。
+
+### 継続的デプロイ (CD)
+
+- `main` ブランチへのマージにより、Vercel 経由で自動的に本番環境へデプロイされます。
+- 全ての CI ステップがパスしない限り、マージは推奨されない運用を想定しています。
