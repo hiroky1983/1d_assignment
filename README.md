@@ -201,6 +201,8 @@ flowchart TD
   pnpm lint
   ```
 
+本番環境URL: https://1d-assignment.vercel.app/
+
 ## 1. 要件定義
 
 - GitHub REST API **`GET /search/repositories`** を使用（固定）
