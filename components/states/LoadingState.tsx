@@ -1,9 +1,13 @@
-import { RepoListSkeleton } from '@/features/search/components/RepoList'
+import { RepoListSkeleton } from '../../features/search/components/RepoListSkeleton'
 
 /**
  * ロード中状態表示コンポーネント (UI)
  * データ取得中に表示するスケルトンローディングをラップします。
  */
 export const LoadingState = () => {
-  return <RepoListSkeleton />
+  return (
+    <div data-testid="loading-state">
+      <RepoListSkeleton />
+    </div>
+  )
 }

@@ -24,7 +24,7 @@ interface RateLimitOptions {
  *   // リクエストを拒否
  * }
  */
-export function rateLimit(options?: RateLimitOptions) {
+export const rateLimit = (options?: RateLimitOptions) => {
   const tokenCache = new LRUCache<string, number>({
     max: options?.uniqueTokenPerInterval || 500,
     ttl: options?.interval || 60000,

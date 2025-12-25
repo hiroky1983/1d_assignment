@@ -1,33 +1,12 @@
 import { CircleDot, ExternalLink, Eye, GitFork, Star } from 'lucide-react'
-import { headers } from 'next/headers'
 import Image from 'next/image'
 
 import { Skeleton } from '@/components/ui/Skeleton'
 
-import { RepoDetail } from '../types'
+import { getRepoDetail } from '../api/repo'
 
 interface RepoDetailViewProps {
   paramsPromise: Promise<{ owner: string; name: string }>
-}
-
-/**
- * リポジトリ詳細データを取得する関数 (BFF経由)
- */
-async function getRepo(owner: string, name: string): Promise<RepoDetail> {
-  const headersList = await headers()
-  const host = headersList.get('host')
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
-  const baseUrl = `${protocol}://${host}`
-
-  const res = await fetch(`${baseUrl}/api/repo/${owner}/${name}`, {
-    next: { revalidate: 300 },
-  })
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch repository')
-  }
-
-  return res.json()
 }
 
 /**
@@ -37,7 +16,7 @@ export const RepoDetailView = async ({
   paramsPromise,
 }: RepoDetailViewProps) => {
   const { owner, name } = await paramsPromise
-  const repo = await getRepo(owner, name)
+  const repo = await getRepoDetail(owner, name)
 
   return (
     <div className="border-app-border bg-app-card overflow-hidden rounded-xl border shadow-sm">
